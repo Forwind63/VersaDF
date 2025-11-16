@@ -1,0 +1,72 @@
+
+
+#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SAMPLE_H_
+#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SAMPLE_H_
+
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+#include "minddata/mindrecord/include/shard_operator.h"
+#include "minddata/mindrecord/include/shard_shuffle.h"
+
+namespace mindspore {
+namespace mindrecord {
+class MINDRECORD_API ShardSample : public ShardOperator {
+ public:
+  explicit ShardSample(int64_t n);
+
+  ShardSample(int64_t num, int64_t den);
+
+  ShardSample(int64_t num, int64_t den, int64_t par, int64_t no_of_samples = 0, int64_t offset = -1);
+
+  explicit ShardSample(const std::vector<int64_t> &indices);
+
+  ShardSample(const std::vector<int64_t> &indices, uint32_t seed);
+
+  ~ShardSample() override{};
+
+  std::string Name() override { return "ShardSample"; }
+
+  Status Execute(ShardTaskList &tasks) override;
+
+  Status UpdateTasks(ShardTaskList &tasks, int64_t taking);  // NOLINT
+
+  Status SufExecute(ShardTaskList &tasks) override;
+
+  int64_t GetNumSamples(int64_t dataset_size, int64_t num_classes) override;
+
+ private:
+  // Update the partition_shard_sample_count_ in tasks when distributed by block
+  // Example: Assuming there are 12 samples divided into 4 cards
+  // rank0 rank1 rank2 rank3
+  //   0     3     6     9
+  //   1     4     7     10
+  //   2     5     8     11
+  Status UpdatePartitionWhenSlowMode(ShardTaskList &tasks);  // NOLINT
+
+  // Update the partition_shard_sample_count_ in tasks when distributed by slice
+  // Example: Assuming there are 12 samples divided into 4 cards
+  // rank0 rank1 rank2 rank3
+  //   0     1     2     3
+  //   4     5     6     7
+  //   8     9     10    11
+  Status UpdatePartitionWhenSlowModeBySlice(ShardTaskList &tasks);  // NOLINT
+
+ protected:
+  int64_t numerator_;
+  int64_t denominator_;
+  int64_t partition_id_;
+  int64_t no_of_samples_;
+  std::shared_ptr<ShardShuffle> shuffle_op_;
+  std::vector<int64_t> nums_per_shard_;
+
+ private:
+  std::vector<int64_t> indices_;
+  SamplerType sampler_type_;
+  int64_t offset_;
+};
+}  // namespace mindrecord
+}  // namespace mindspore
+
+#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SAMPLE_H_
