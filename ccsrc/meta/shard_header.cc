@@ -1,6 +1,6 @@
 
 
-#include "minddata/mindrecord/include/shard_header.h"
+#include "minddata/versadf/include/shard_header.h"
 
 #include <map>
 #include <memory>
@@ -10,11 +10,11 @@
 
 #include "utils/file_utils.h"
 #include "utils/ms_utils.h"
-#include "minddata/mindrecord/include/shard_error.h"
-#include "minddata/mindrecord/include/shard_page.h"
+#include "minddata/versadf/include/shard_error.h"
+#include "minddata/versadf/include/shard_page.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 std::atomic<bool> thread_status(false);
 ShardHeader::ShardHeader() : shard_count_(0), header_size_(0), page_size_(0), compression_size_(0) {
   index_ = std::make_shared<Index>();
@@ -45,10 +45,10 @@ Status ShardHeader::CheckFileStatus(const std::string &path) {
   auto realpath = FileUtils::GetRealPath(path.c_str());
   CHECK_FAIL_RETURN_UNEXPECTED_MR(
     realpath.has_value(),
-    "Invalid file, failed to get the realpath of mindrecord files. Please check file path: " + path);
+    "Invalid file, failed to get the realpath of versadf files. Please check file path: " + path);
   std::ifstream fin(realpath.value(), std::ios::in | std::ios::binary);
   CHECK_FAIL_RETURN_UNEXPECTED_MR(fin.is_open(),
-                                  "Invalid file, failed to open files for loading mindrecord files. Please check file "
+                                  "Invalid file, failed to open files for loading versadf files. Please check file "
                                   "path, permission and open file limit: " +
                                     path);
   // fetch file size
@@ -61,10 +61,10 @@ Status ShardHeader::CheckFileStatus(const std::string &path) {
   size_t file_size = fin.tellg();
   if (file_size < kMinFileSize) {
     fin.close();
-    RETURN_STATUS_UNEXPECTED_MR("Invalid file, the size of mindrecord file: " + std::to_string(file_size) +
+    RETURN_STATUS_UNEXPECTED_MR("Invalid file, the size of versadf file: " + std::to_string(file_size) +
                                 " is smaller than the lower limit: " + std::to_string(kMinFileSize) +
                                 ".\n Please check file path: " + path +
-                                " and use 'FileWriter' to generate valid mindrecord files.");
+                                " and use 'FileWriter' to generate valid versadf files.");
   }
   fin.close();
   return Status::OK();
@@ -77,13 +77,13 @@ Status ShardHeader::ValidateHeader(const std::string &path, std::shared_ptr<json
   auto realpath = FileUtils::GetRealPath(path.c_str());
   CHECK_FAIL_RETURN_UNEXPECTED_MR(
     realpath.has_value(),
-    "Invalid file, failed to get the realpath of mindrecord files. Please check file path: " + path);
+    "Invalid file, failed to get the realpath of versadf files. Please check file path: " + path);
 
   // read header size
   json json_header;
   std::ifstream fin(realpath.value(), std::ios::in | std::ios::binary);
   CHECK_FAIL_RETURN_UNEXPECTED_MR(fin.is_open(),
-                                  "Invalid file, failed to open files for loading mindrecord files. Please check file "
+                                  "Invalid file, failed to open files for loading versadf files. Please check file "
                                   "path, permission and open file limit: " +
                                     path);
 
@@ -97,9 +97,9 @@ Status ShardHeader::ValidateHeader(const std::string &path, std::shared_ptr<json
   if (header_size > kMaxHeaderSize) {
     fin.close();
     RETURN_STATUS_UNEXPECTED_MR(
-      "Invalid file, the size of mindrecord file header is larger than the upper limit. \n"
-      "The invalid mindrecord file is [" +
-      path + "]. \nPlease use 'FileWriter' to generate valid mindrecord files.");
+      "Invalid file, the size of versadf file header is larger than the upper limit. \n"
+      "The invalid versadf file is [" +
+      path + "]. \nPlease use 'FileWriter' to generate valid versadf files.");
   }
 
   // read header content
@@ -108,7 +108,7 @@ Status ShardHeader::ValidateHeader(const std::string &path, std::shared_ptr<json
   if (!io_read_content.good() || io_read_content.fail() || io_read_content.bad()) {
     fin.close();
     RETURN_STATUS_UNEXPECTED_MR("Invalid file, failed to read header content of file: " + path +
-                                ", please check correction of MindRecord File");
+                                ", please check correction of versadf File");
   }
 
   fin.close();
@@ -118,7 +118,7 @@ Status ShardHeader::ValidateHeader(const std::string &path, std::shared_ptr<json
     json_header = json::parse(raw_header_content);
   } catch (json::parse_error &e) {
     RETURN_STATUS_UNEXPECTED_MR("Invalid file, failed to parse header content of file: " + path +
-                                ", please check correction of MindRecord File");
+                                ", please check correction of versadf File");
   }
   *header_ptr = std::make_shared<json>(json_header);
   return Status::OK();
@@ -193,8 +193,8 @@ void ShardHeader::GetHeadersOneTask(int start, int end, std::vector<json> &heade
     (*header)["shard_addresses"] = realAddresses;
     if (std::find(kSupportedVersion.begin(), kSupportedVersion.end(), (*header)["version"]) ==
         kSupportedVersion.end()) {
-      MS_LOG(ERROR) << "Invalid file, the version of mindrecord files" << (*header)["version"].dump()
-                    << " is not supported.\nPlease use 'FileWriter' to generate valid mindrecord files.";
+      MS_LOG(ERROR) << "Invalid file, the version of versadf files" << (*header)["version"].dump()
+                    << " is not supported.\nPlease use 'FileWriter' to generate valid versadf files.";
       thread_status = true;
       return;
     }
@@ -662,7 +662,7 @@ Status ShardHeader::Initialize(const std::shared_ptr<ShardHeader> *header_ptr, c
                                const std::vector<std::string> &index_fields, std::vector<std::string> &blob_fields,
                                uint64_t &schema_id) {
   RETURN_UNEXPECTED_IF_NULL_MR(header_ptr);
-  auto schema_ptr = Schema::Build("mindrecord", schema);
+  auto schema_ptr = Schema::Build("versadf", schema);
   CHECK_FAIL_RETURN_UNEXPECTED_MR(schema_ptr != nullptr, "[Internal ERROR] Failed to build schema: " + schema.dump() +
                                                            "." + "Check the [ERROR] logs before for more details.");
   schema_id = (*header_ptr)->AddSchema(schema_ptr);
@@ -678,5 +678,5 @@ Status ShardHeader::Initialize(const std::shared_ptr<ShardHeader> *header_ptr, c
   blob_fields = build_schema_ptr->GetBlobFields();
   return Status::OK();
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

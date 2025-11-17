@@ -1,9 +1,9 @@
 
 
-#include "minddata/mindrecord/include/shard_category.h"
+#include "minddata/versadf/include/shard_category.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 ShardCategory::ShardCategory(const std::vector<std::pair<std::string, std::string>> &categories, int64_t num_elements,
                              bool replacement)
     : categories_(categories),
@@ -38,5 +38,5 @@ int64_t ShardCategory::GetNumSamples(int64_t dataset_size, int64_t num_classes) 
   }
   return 0;
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

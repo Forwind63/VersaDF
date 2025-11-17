@@ -22,9 +22,9 @@ EXCEPTIONS = dict(
     PathNotExistsError=[4, 'Path does not exist.'],
     DbConnectionError=[5, 'Db connection is error.'],
 
-    # MindRecord error 100-199 for shard*
-    MRMOpenError=[100, 'MindRecord could not open.'],
-    MRMOpenForAppendError=[101, 'MindRecord could not open for append.'],
+    # versadf error 100-199 for shard*
+    MRMOpenError=[100, 'versadf could not open.'],
+    MRMOpenForAppendError=[101, 'versadf could not open for append.'],
     MRMInvalidPageSizeError=[102, 'Failed to set page size.'],
     MRMInvalidHeaderSizeError=[103, 'Failed to set header size.'],
     MRMSetHeaderError=[104, 'Failed to set header.'],
@@ -49,7 +49,7 @@ EXCEPTIONS = dict(
     MRMFetchDataError=[120, 'Failed to fetch data by category.'],
 
 
-    # MindRecord error 200-299 for File* and MindPage
+    # versadf error 200-299 for File* and MindPage
     MRMInvalidSchemaError=[200, 'Schema is error.'],
     MRMValidateDataError=[201, 'Raw data is valid.'],
     MRMDefineIndexError=[202, 'Index field is error.'],
@@ -60,16 +60,16 @@ EXCEPTIONS = dict(
 )
 
 
-class MindRecordException(Exception):
-    """MindRecord base error class."""
+class versadfException(Exception):
+    """versadf base error class."""
 
     def __init__(self):
-        """Initialize an error which may occurs in mindrecord."""
-        super(MindRecordException, self).__init__()
+        """Initialize an error which may occurs in versadf."""
+        super(versadfException, self).__init__()
         class_name = self.__class__.__name__
         error_item = EXCEPTIONS.get(class_name) if class_name in EXCEPTIONS else EXCEPTIONS.get('UnknownError')
         self._error_msg = error_item[1]
-        self._error_code = MindRecordException.transform_error_code(error_item[0])
+        self._error_code = versadfException.transform_error_code(error_item[0])
 
     def __str__(self):
         return "[{}]: {}".format(self.__class__.__name__, self._error_msg)
@@ -91,7 +91,7 @@ class MindRecordException(Exception):
     @staticmethod
     def transform_error_code(exception_no):
         """
-        Transform mindrecord exception no to GE error code.
+        Transform versadf exception no to GE error code.
 
         error_code = ((0xFF & runtime) << 30) \
                     | ((0xFF & error_code_type) << 28) \
@@ -119,11 +119,11 @@ class MindRecordException(Exception):
         return error_code
 
 
-class UnknownError(MindRecordException):
+class UnknownError(versadfException):
     """Raise an unknown error when an unknown error occurs."""
 
 
-class ParamValueError(MindRecordException):
+class ParamValueError(versadfException):
     """
     Request param value error.
     """
@@ -133,7 +133,7 @@ class ParamValueError(MindRecordException):
         self.error_msg = 'Invalid parameter value. {}'.format(error_detail)
 
 
-class ParamTypeError(MindRecordException):
+class ParamTypeError(versadfException):
     """
     Request param type error.
     """
@@ -144,7 +144,7 @@ class ParamTypeError(MindRecordException):
                          "".format(param_name, expected_type)
 
 
-class ParamMissError(MindRecordException):
+class ParamMissError(versadfException):
     """
     missing param error.
     """
@@ -154,7 +154,7 @@ class ParamMissError(MindRecordException):
         self.error_msg = "Param missing. '{}' is required.".format(param_name)
 
 
-class PathNotExistsError(MindRecordException):
+class PathNotExistsError(versadfException):
     """
     invalid path.
     """
@@ -163,7 +163,7 @@ class PathNotExistsError(MindRecordException):
         self.error_msg = 'Invalid path. {}'.format(error_path)
 
 
-class DbConnectionError(MindRecordException):
+class DbConnectionError(versadfException):
     """
     Database connection error.
     """
@@ -172,127 +172,127 @@ class DbConnectionError(MindRecordException):
         self.error_msg = 'Db connection is error. Detail: {}'.format(error_detail)
 
 
-class MRMOpenError(MindRecordException):
+class MRMOpenError(versadfException):
     """
     Raised when could not open mind record file successfully.
     """
     def __init__(self):
         super(MRMOpenError, self).__init__()
-        self.error_msg = 'MindRecord File could not open successfully.'
+        self.error_msg = 'versadf File could not open successfully.'
 
 
-class MRMOpenForAppendError(MindRecordException):
+class MRMOpenForAppendError(versadfException):
     """
     Raised when could not open mind record file successfully for append.
     """
     def __init__(self):
         super(MRMOpenForAppendError, self).__init__()
-        self.error_msg = 'MindRecord File could not open successfully for append.'
+        self.error_msg = 'versadf File could not open successfully for append.'
 
 
-class MRMInvalidPageSizeError(MindRecordException):
+class MRMInvalidPageSizeError(versadfException):
     pass
 
 
-class MRMInvalidHeaderSizeError(MindRecordException):
+class MRMInvalidHeaderSizeError(versadfException):
     pass
 
 
-class MRMSetHeaderError(MindRecordException):
+class MRMSetHeaderError(versadfException):
     pass
 
 
-class MRMWriteDatasetError(MindRecordException):
+class MRMWriteDatasetError(versadfException):
     pass
 
 
-class MRMCommitError(MindRecordException):
+class MRMCommitError(versadfException):
     pass
 
 
-class MRMLaunchError(MindRecordException):
+class MRMLaunchError(versadfException):
     pass
 
 
-class MRMFinishError(MindRecordException):
+class MRMFinishError(versadfException):
     pass
 
 
-class MRMCloseError(MindRecordException):
+class MRMCloseError(versadfException):
     pass
 
 
-class MRMAddSchemaError(MindRecordException):
+class MRMAddSchemaError(versadfException):
     pass
 
 
-class MRMAddIndexError(MindRecordException):
+class MRMAddIndexError(versadfException):
     pass
 
 
-class MRMBuildSchemaError(MindRecordException):
+class MRMBuildSchemaError(versadfException):
     pass
 
 
-class MRMGetMetaError(MindRecordException):
+class MRMGetMetaError(versadfException):
     pass
 
 
-class MRMIndexGeneratorError(MindRecordException):
+class MRMIndexGeneratorError(versadfException):
     pass
 
 
-class MRMGenerateIndexError(MindRecordException):
+class MRMGenerateIndexError(versadfException):
     pass
 
 
-class MRMInitSegmentError(MindRecordException):
+class MRMInitSegmentError(versadfException):
     pass
 
 
-class MRMFetchCandidateFieldsError(MindRecordException):
+class MRMFetchCandidateFieldsError(versadfException):
     pass
 
 
-class MRMReadCategoryInfoError(MindRecordException):
+class MRMReadCategoryInfoError(versadfException):
     pass
 
 
-class MRMFetchDataError(MindRecordException):
+class MRMFetchDataError(versadfException):
     pass
 
 
-class MRMInvalidSchemaError(MindRecordException):
+class MRMInvalidSchemaError(versadfException):
     def __init__(self, error_detail):
         super(MRMInvalidSchemaError, self).__init__()
         self.error_msg = 'Schema format is error. Detail: {}'.format(error_detail)
 
 
-class MRMValidateDataError(MindRecordException):
+class MRMValidateDataError(versadfException):
     def __init__(self, error_detail):
         super(MRMValidateDataError, self).__init__()
         self.error_msg = 'Raw data do not match the schema. Detail: {}'.format(error_detail)
 
 
-class MRMDefineIndexError(MindRecordException):
+class MRMDefineIndexError(versadfException):
     def __init__(self, error_detail):
         super(MRMDefineIndexError, self).__init__()
         self.error_msg = 'Failed to define index field. Detail: {}'.format(error_detail)
 
 
-class MRMDefineBlobError(MindRecordException):
+class MRMDefineBlobError(versadfException):
     def __init__(self, error_detail):
         super(MRMDefineBlobError, self).__init__()
         self.error_msg = 'Failed to define blob field. Detail: {}'.format(error_detail)
 
 
-class MRMUnsupportedSchemaError(MindRecordException):
+class MRMUnsupportedSchemaError(versadfException):
     def __init__(self, error_detail):
         super(MRMUnsupportedSchemaError, self).__init__()
         self.error_msg = 'Schema is not supported. Detail: {}'.format(error_detail)
 
 
-class MRMDefineCategoryError(MindRecordException):
+class MRMDefineCategoryError(versadfException):
     def __init__(self, error_detail):
         super(MRMDefineCategoryError, self).__init__()
         self.error_msg = 'Failed to define category field. Detail: {}'.format(error_detail)

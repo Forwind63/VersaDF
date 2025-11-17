@@ -1,5 +1,5 @@
 """
-Cifar10 convert tool for MindRecord.
+Cifar10 convert tool for versadf.
 """
 
 from importlib import import_module
@@ -18,22 +18,22 @@ __all__ = ['Cifar10ToMR']
 class Cifar10ToMR:
     """
     A class to transform from cifar10 which needs to be a Python version with a name
-    similar to: ``cifar-10-python.tar.gz`` to MindRecord.
+    similar to: ``cifar-10-python.tar.gz`` to versadf.
 
     Args:
         source (str): The cifar10 directory to be transformed.
-        destination (str): MindRecord file path to transform into, ensure that the directory is created in advance and
+        destination (str): versadf file path to transform into, ensure that the directory is created in advance and
             no file with the same name exists in the directory.
 
     Raises:
         ValueError: If source or destination is invalid.
 
     Examples:
-        >>> from mindspore.mindrecord import Cifar10ToMR
+        >>> from mindspore.versadf import Cifar10ToMR
         >>>
         >>> cifar10_dir = "/path/to/cifar10"
-        >>> mindrecord_file = "/path/to/mindrecord/file"
-        >>> cifar10_to_mr = Cifar10ToMR(cifar10_dir, mindrecord_file)
+        >>> versadf_file = "/path/to/versadf/file"
+        >>> cifar10_to_mr = Cifar10ToMR(cifar10_dir, versadf_file)
         >>> cifar10_to_mr.transform()
     """
 
@@ -82,16 +82,16 @@ class Cifar10ToMR:
         data_list = self._construct_raw_data(images, labels)
         test_data_list = self._construct_raw_data(test_images, test_labels)
 
-        self._generate_mindrecord(self.destination, data_list, fields, "img_train")
-        self._generate_mindrecord(self.destination + "_test", test_data_list, fields, "img_test")
+        self._generate_versadf(self.destination, data_list, fields, "img_train")
+        self._generate_versadf(self.destination + "_test", test_data_list, fields, "img_test")
         return SUCCESS
 
     def transform(self, fields=None):
         """
-        Execute transformation from cifar10 to MindRecord.
+        Execute transformation from cifar10 to versadf.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.Cifar10ToMR` .
+            Please refer to the Examples of :class:`mindspore.versadf.Cifar10ToMR` .
 
         .. warning::
             `Cifar10ToMR.transform()` uses `pickle` module implicitly, which is known to be insecure.
@@ -100,11 +100,11 @@ class Cifar10ToMR:
 
         Args:
             fields (list[str], optional): A list of index fields. Default: ``None`` . For index field settings,
-                please refer to :func:`mindspore.mindrecord.FileWriter.add_index` .
+                please refer to :func:`mindspore.versadf.FileWriter.add_index` .
 
         Raises:
             ParamTypeError: If index field is invalid.
-            MRMOpenError: If failed to open MindRecord file.
+            MRMOpenError: If failed to open versadf file.
             MRMValidateDataError: If data does not match blob fields.
             MRMSetHeaderError: If failed to set header.
             MRMWriteDatasetError: If failed to write dataset.
@@ -141,12 +141,12 @@ class Cifar10ToMR:
         return raw_data
 
 
-    def _generate_mindrecord(self, file_name, raw_data, fields, schema_desc):
+    def _generate_versadf(self, file_name, raw_data, fields, schema_desc):
         """
-        Generate MindRecord file from raw data.
+        Generate versadf file from raw data.
 
         Args:
-            file_name (str): File name of MindRecord File.
+            file_name (str): File name of versadf File.
             fields (list[str]): Fields would be set as index which
             could not belong to blob fields and type could not be 'array' or 'bytes'.
             raw_data (dict): dict of raw data.
@@ -158,7 +158,7 @@ class Cifar10ToMR:
 
         schema = {"id": {"type": "int64"}, "label": {"type": "int64"}, "data": {"type": "bytes"}}
 
-        logger.info("transformed MindRecord schema is: {}".format(schema))
+        logger.info("transformed versadf schema is: {}".format(schema))
 
         writer = FileWriter(file_name, 1)
         writer.add_schema(schema, schema_desc)

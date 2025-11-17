@@ -1,15 +1,15 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_ERROR_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_ERROR_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_ERROR_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_ERROR_H_
 
 #include <map>
 #include <string>
 #include "include/api/status.h"
-#include "minddata/mindrecord/include/common/log_adapter.h"
+#include "minddata/versadf/include/common/log_adapter.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 #define RETURN_IF_NOT_OK_MR(_s) \
   do {                          \
     Status __rc = (_s);         \
@@ -30,7 +30,7 @@ namespace mindrecord {
     }                                                 \
   } while (false)
 
-#define STATUS_ERROR_MR(_error_code, _e) mindspore::Status(_error_code, __LINE__, MINDRECORD_SRC_FILE_NAME, _e)
+#define STATUS_ERROR_MR(_error_code, _e) mindspore::Status(_error_code, __LINE__, versadf_SRC_FILE_NAME, _e)
 
 #define RETURN_STATUS_ERROR_MR(_error_code, _e) \
   do {                                          \
@@ -69,7 +69,7 @@ enum MSRStatus {
   FAILED = 1,
 };
 
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_ERROR_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_ERROR_H_

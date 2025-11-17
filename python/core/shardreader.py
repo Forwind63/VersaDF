@@ -1,9 +1,9 @@
 """
-This module is to read data from mindrecord.
+This module is to read data from versadf.
 """
-import mindspore._c_mindrecord as ms
+import mindspore._c_versadf as ms
 from mindspore import log as logger
-from mindspore.mindrecord.common.exceptions import MRMOpenError, MRMLaunchError
+from mindspore.versadf.common.exceptions import MRMOpenError, MRMLaunchError
 
 __all__ = ['ShardReader']
 
@@ -12,17 +12,17 @@ class ShardReader:
     """
     Wrapper class which is represent ShardReader class in c++ module.
 
-    The class would read a batch of data from MindRecord File series.
+    The class would read a batch of data from versadf File series.
     """
     def __init__(self):
         self._reader = ms.ShardReader()
 
     def open(self, file_name, num_consumer=4, columns=None, operator=None):
         """
-        Open file and prepare to read MindRecord File.
+        Open file and prepare to read versadf File.
 
         Args:
-           file_name (str, list[str]): File names of MindRecord File.
+           file_name (str, list[str]): File names of versadf File.
            num_consumer (int): Number of worker threads which load data in parallel. Default: 4.
            columns (list[str]): List of fields which correspond data would be read.
            operator(int): Reserved parameter for operators. Default: ``None``.
@@ -31,7 +31,7 @@ class ShardReader:
             MSRStatus, SUCCESS or FAILED.
 
         Raises:
-            MRMOpenError: If failed to open MindRecord File.
+            MRMOpenError: If failed to open versadf File.
         """
         columns = columns if columns else []
         operator = operator if operator else []
@@ -74,7 +74,7 @@ class ShardReader:
 
     def get_blob_fields(self):
         """
-        Return blob fields of MindRecord.
+        Return blob fields of versadf.
 
         Returns:
             list of str.
@@ -83,7 +83,7 @@ class ShardReader:
 
     def get_header(self):
         """
-        Return header of MindRecord.
+        Return header of versadf.
 
         Returns:
             pointer object refer to header.
@@ -91,14 +91,14 @@ class ShardReader:
         return self._reader.get_header()
 
     def close(self):
-        """close MindRecord File."""
+        """close versadf File."""
         self._reader.close()
 
     def len(self):
         """
-        Get the number of the samples in MindRecord.
+        Get the number of the samples in versadf.
 
         Returns:
-            int, the number of the samples in MindRecord.
+            int, the number of the samples in versadf.
         """
         return self._reader.len()

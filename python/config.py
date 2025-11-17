@@ -6,7 +6,7 @@ Common imported modules in corresponding API examples are as follows:
 
 .. code-block::
 
-    from mindspore.mindrecord import set_enc_key, set_enc_mode, set_dec_mode
+    from mindspore.versadf import set_enc_key, set_enc_mode, set_dec_mode
 """
 
 import os
@@ -31,19 +31,19 @@ DEC_MODE = None
 HASH_MODE = None
 
 
-# the final mindrecord after encode should be like below
-# 1. for create new mindrecord
-# mindrecord -> enc_mindrecord+'ENCRYPT'
-# 2. for read mindrecord
-# enc_mindrecord+'ENCRYPT' -> mindrecord
+# the final versadf after encode should be like below
+# 1. for create new versadf
+# versadf -> enc_versadf+'ENCRYPT'
+# 2. for read versadf
+# enc_versadf+'ENCRYPT' -> versadf
 
 
-# mindrecord file encode end flag, we will append 'ENCRYPT' to the end of file
+# versadf file encode end flag, we will append 'ENCRYPT' to the end of file
 ENCRYPT_END_FLAG = str('ENCRYPT').encode('utf-8')
 
 
-# directory which stored decrypt mindrecord files
-DECRYPT_DIRECTORY = ".decrypt_mindrecord"
+# directory which stored decrypt versadf files
+DECRYPT_DIRECTORY = ".decrypt_versadf"
 DECRYPT_DIRECTORY_LIST = []
 
 
@@ -65,7 +65,7 @@ def set_enc_key(enc_key):
         ValueError: The input is not str or length error.
 
     Examples:
-        >>> from mindspore.mindrecord import set_enc_key
+        >>> from mindspore.versadf import set_enc_key
         >>>
         >>> set_enc_key("0123456789012345")
     """
@@ -103,7 +103,7 @@ def set_enc_mode(enc_mode="AES-GCM"):
         ValueError: The input is not valid encode mode or callable function.
 
     Examples:
-        >>> from mindspore.mindrecord import set_enc_mode
+        >>> from mindspore.versadf import set_enc_mode
         >>>
         >>> set_enc_mode("AES-GCM")
     """
@@ -146,7 +146,7 @@ def set_dec_mode(dec_mode="AES-GCM"):
         ValueError: The input is not valid decode mode or callable function.
 
     Examples:
-        >>> from mindspore.mindrecord import set_dec_mode
+        >>> from mindspore.versadf import set_dec_mode
         >>>
         >>> set_dec_mode("AES-GCM")
     """
@@ -236,9 +236,9 @@ def encrypt(filename, enc_key, enc_mode):
                     enc_mode(f, file_size, f_encrypt, enc_key)
                 else:
                     # read the file with offset and do encrypt
-                    # original mindrecord file like:
+                    # original versadf file like:
                     # |64M|64M|64M|64M|...
-                    # encrypted mindrecord file like:
+                    # encrypted versadf file like:
                     # len+encrypt_data|len+encrypt_data|len+encrypt_data|...|0|enc_mode|ENCRYPT_END_FLAG
                     while True:
                         if file_size - current_offset >= offset:
@@ -289,7 +289,7 @@ def encrypt(filename, enc_key, enc_mode):
     global ENCRYPT_TIME
     ENCRYPT_TIME += end - start
     if ENCRYPT_TIME > WARNING_INTERVAL:
-        logger.warning("It takes another " + str(WARNING_INTERVAL) + "s to encrypt the mindrecord file.")
+        logger.warning("It takes another " + str(WARNING_INTERVAL) + "s to encrypt the versadf file.")
         ENCRYPT_TIME = ENCRYPT_TIME - WARNING_INTERVAL
 
     # change the file mode
@@ -367,22 +367,22 @@ def decrypt(filename, enc_key, dec_mode):
 
     whole_file_size = os.path.getsize(filename)
     if whole_file_size < MIN_FILE_SIZE:
-        raise RuntimeError("Invalid file, the size of mindrecord file: " + str(whole_file_size) +
+        raise RuntimeError("Invalid file, the size of versadf file: " + str(whole_file_size) +
                            " is smaller than the lower limit: " + str(MIN_FILE_SIZE) +
                            ".\n Please check file path: " + filename +
-                           " and use 'FileWriter' to generate valid mindrecord files.")
+                           " and use 'FileWriter' to generate valid versadf files.")
 
     # check ENCRYPT_END_FLAG
     stored_encrypt_end_flag = _get_encrypt_end_flag(filename)
     if _get_enc_key() is not None:
         if stored_encrypt_end_flag != ENCRYPT_END_FLAG:
-            raise RuntimeError("The mindrecord file is not encrypted. You can set " +
-                               "'mindspore.mindrecord.config.set_enc_key(None)' to disable the decryption.")
+            raise RuntimeError("The versadf file is not encrypted. You can set " +
+                               "'mindspore.versadf.config.set_enc_key(None)' to disable the decryption.")
     else:
         if stored_encrypt_end_flag == ENCRYPT_END_FLAG:
-            raise RuntimeError("The mindrecord file is encrypted. You need to configure " +
-                               "'mindspore.mindrecord.config.set_enc_key(...)' and " +
-                               "'mindspore.mindrecord.config.set_enc_mode(...)' for decryption.")
+            raise RuntimeError("The versadf file is encrypted. You need to configure " +
+                               "'mindspore.versadf.config.set_enc_key(...)' and " +
+                               "'mindspore.versadf.config.set_enc_mode(...)' for decryption.")
         return filename
 
     # check dec_mode with enc_mode
@@ -405,12 +405,12 @@ def decrypt(filename, enc_key, dec_mode):
         if not os.path.exists(current_decrypt_dir):
             os.mkdir(current_decrypt_dir)
             os.chmod(current_decrypt_dir, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
-            logger.info("Create directory: {} to store decrypt mindrecord files."
+            logger.info("Create directory: {} to store decrypt versadf files."
                         .format(os.path.join(parent_dir, DECRYPT_DIRECTORY)))
 
         if current_decrypt_dir not in DECRYPT_DIRECTORY_LIST:
             DECRYPT_DIRECTORY_LIST.append(current_decrypt_dir)
-            logger.warning("The decrypt mindrecord file will be stored in [" + current_decrypt_dir + "] directory. "
+            logger.warning("The decrypt versadf file will be stored in [" + current_decrypt_dir + "] directory. "
                            "If you don't use it anymore after train / eval, you need to delete it manually.")
 
         # create new decrypt file
@@ -425,7 +425,7 @@ def decrypt(filename, enc_key, dec_mode):
                     dec_mode(f, file_size, f_decrypt, enc_key)
                 else:
                     # read the file and do decrypt
-                    # encrypted mindrecord file like:
+                    # encrypted versadf file like:
                     # len+encrypt_data|len+encrypt_data|len+encrypt_data|...|0|enc_mode|ENCRYPT_END_FLAG
                     current_offset = 0           ## use this to seek file
                     length = int().from_bytes(f.read(4), byteorder='big', signed=True)
@@ -472,7 +472,7 @@ def decrypt(filename, enc_key, dec_mode):
     global DECRYPT_TIME
     DECRYPT_TIME += end - start
     if DECRYPT_TIME > WARNING_INTERVAL:
-        logger.warning("It takes another " + str(WARNING_INTERVAL) + "s to decrypt the mindrecord file.")
+        logger.warning("It takes another " + str(WARNING_INTERVAL) + "s to decrypt the versadf file.")
         DECRYPT_TIME = DECRYPT_TIME - WARNING_INTERVAL
 
     # change the file mode

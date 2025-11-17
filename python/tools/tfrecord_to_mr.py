@@ -1,5 +1,5 @@
 """
-TFRecord convert tool for MindRecord
+TFRecord convert tool for versadf
 """
 
 from importlib import import_module
@@ -25,7 +25,7 @@ def _cast_string_type_to_np_type(value):
     if value in string_type_to_np_type:
         return string_type_to_np_type[value]
 
-    raise ValueError("Type " + value + " is not supported cast to numpy type in MindRecord.")
+    raise ValueError("Type " + value + " is not supported cast to numpy type in versadf.")
 
 
 def _cast_name(key):
@@ -52,11 +52,11 @@ def _cast_name(key):
 
 class TFRecordToMR:
     """
-    A class to transform from TFRecord to MindRecord.
+    A class to transform from TFRecord to versadf.
 
     Args:
         source (str): TFRecord file to be transformed.
-        destination (str): MindRecord file path to transform into, ensure that the directory is created in advance and
+        destination (str): versadf file path to transform into, ensure that the directory is created in advance and
             no file with the same name exists in the directory.
         feature_dict (dict[str, FixedLenFeature]): Dictionary that states the feature type, and
             `FixedLenFeature <https://www.tensorflow.org/api_docs/python/tf/io/FixedLenFeature>`_ is supported.
@@ -68,23 +68,23 @@ class TFRecordToMR:
         Exception: when tensorflow module is not found or version is not correct.
 
     Examples:
-        >>> from mindspore.mindrecord import TFRecordToMR
+        >>> from mindspore.versadf import TFRecordToMR
         >>> import tensorflow as tf
         >>>
         >>> tfrecord_file = "/path/to/tfrecord/file"
-        >>> mindrecord_file = "/path/to/mindrecord/file"
+        >>> versadf_file = "/path/to/versadf/file"
         >>> feature_dict = {"file_name": tf.io.FixedLenFeature([], tf.string),
         ...                 "image_bytes": tf.io.FixedLenFeature([], tf.string),
         ...                 "int64_scalar": tf.io.FixedLenFeature([], tf.int64),
         ...                 "float_scalar": tf.io.FixedLenFeature([], tf.float32),
         ...                 "int64_list": tf.io.FixedLenFeature([6], tf.int64),
         ...                 "float_list": tf.io.FixedLenFeature([7], tf.float32)}
-        >>> tfrecord_to_mr = TFRecordToMR(tfrecord_file, mindrecord_file, feature_dict, ["image_bytes"])
+        >>> tfrecord_to_mr = TFRecordToMR(tfrecord_file, versadf_file, feature_dict, ["image_bytes"])
         >>> tfrecord_to_mr.transform()
     """
 
     def __init__(self, source, destination, feature_dict, bytes_fields=None):
-        self.tf = import_module("tensorflow")  # just used to convert tfrecord to mindrecord
+        self.tf = import_module("tensorflow")  # just used to convert tfrecord to versadf
 
         if self.tf.__version__ < SupportedTensorFlowVersion:
             raise Exception("Module tensorflow version must be greater or equal {}.".format(SupportedTensorFlowVersion))
@@ -118,7 +118,7 @@ class TFRecordToMR:
         self.bytes_fields_list = bytes_fields_list
         self.scalar_set = set()
         self.list_set = set()
-        self.mindrecord_schema = self._parse_mindrecord_schema_from_feature_dict()
+        self.versadf_schema = self._parse_versadf_schema_from_feature_dict()
 
     def _check_input(self, source, destination, feature_dict):
         """Validation check for inputs of init method"""
@@ -137,16 +137,16 @@ class TFRecordToMR:
             if not isinstance(val, self.tf.io.FixedLenFeature):
                 raise ValueError("Parameter feature_dict: {} only support FixedLenFeature.".format(feature_dict))
 
-    def _parse_mindrecord_schema_from_feature_dict(self):
-        """get mindrecord schema from feature dict"""
-        mindrecord_schema = {}
+    def _parse_versadf_schema_from_feature_dict(self):
+        """get versadf schema from feature dict"""
+        versadf_schema = {}
         for key, val in self.feature_dict.items():
             if not val.shape:
                 self.scalar_set.add(_cast_name(key))
                 if _cast_name(key) in self.bytes_fields_list:
-                    mindrecord_schema[_cast_name(key)] = {"type": "bytes"}
+                    versadf_schema[_cast_name(key)] = {"type": "bytes"}
                 else:
-                    mindrecord_schema[_cast_name(key)] = {"type": self._cast_type(val.dtype)}
+                    versadf_schema[_cast_name(key)] = {"type": self._cast_type(val.dtype)}
             else:
                 if len(val.shape) != 1:
                     raise ValueError("Parameter len(feature_dict[{}].shape) should be 1.")
@@ -159,8 +159,8 @@ class TFRecordToMR:
                     raise ValueError("Parameter feature_dict[{}].dtype is tf.string which shape[0] "
                                      "is not None. It is not supported.".format(key))
                 self.list_set.add(_cast_name(key))
-                mindrecord_schema[_cast_name(key)] = {"type": self._cast_type(val.dtype), "shape": [val.shape[0]]}
-        return mindrecord_schema
+                versadf_schema[_cast_name(key)] = {"type": self._cast_type(val.dtype), "shape": [val.shape[0]]}
+        return versadf_schema
 
     def _parse_record(self, example):
         """Returns features for a single example"""
@@ -226,7 +226,7 @@ class TFRecordToMR:
                                                  "list.".format(key, val))
                             # list set
                             ms_dict[cast_key] = \
-                                np.asarray(val, _cast_string_type_to_np_type(self.mindrecord_schema[cast_key]["type"]))
+                                np.asarray(val, _cast_string_type_to_np_type(self.versadf_schema[cast_key]["type"]))
                     yield ms_dict
                 except self.tf.errors.OutOfRangeError:
                     break
@@ -234,7 +234,7 @@ class TFRecordToMR:
                     raise ValueError("TFRecord feature_dict parameter error.")
 
     def _get_data_from_tfrecord_sample(self, iterator):
-        """convert tfrecord sample to mindrecord sample"""
+        """convert tfrecord sample to versadf sample"""
         ms_dict = {}
         sample = iterator.get_next()
         for key, val in sample.items():
@@ -247,7 +247,7 @@ class TFRecordToMR:
                                      .format(key, val))
                 # list set
                 ms_dict[cast_key] = \
-                    np.asarray(val, _cast_string_type_to_np_type(self.mindrecord_schema[cast_key]["type"]))
+                    np.asarray(val, _cast_string_type_to_np_type(self.versadf_schema[cast_key]["type"]))
         return ms_dict
 
     # pylint: disable=missing-docstring
@@ -268,10 +268,10 @@ class TFRecordToMR:
     # pylint: disable=missing-docstring
     def run(self):
         writer = FileWriter(self.destination)
-        logger.info("Transformed MindRecord schema is: {}, TFRecord feature dict is: {}"
-                    .format(self.mindrecord_schema, self.feature_dict))
+        logger.info("Transformed versadf schema is: {}, TFRecord feature dict is: {}"
+                    .format(self.versadf_schema, self.feature_dict))
 
-        writer.add_schema(self.mindrecord_schema, "TFRecord to MindRecord")
+        writer.add_schema(self.versadf_schema, "TFRecord to versadf")
         if self.tf.__version__ < '2.0.0':
             tf_iter = self.tfrecord_iterator_oldversion()
         else:
@@ -296,14 +296,14 @@ class TFRecordToMR:
 
     def transform(self):
         """
-        Execute transformation from TFRecord to MindRecord.
+        Execute transformation from TFRecord to versadf.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.TFRecordToMR` .
+            Please refer to the Examples of :class:`mindspore.versadf.TFRecordToMR` .
 
         Raises:
             ParamTypeError: If index field is invalid.
-            MRMOpenError: If failed to open MindRecord file.
+            MRMOpenError: If failed to open versadf file.
             MRMValidateDataError: If data does not match blob fields.
             MRMSetHeaderError: If failed to set header.
             MRMWriteDatasetError: If failed to write dataset.
@@ -318,13 +318,13 @@ class TFRecordToMR:
 
     def _cast_type(self, value):
         """
-        Cast complex data type to basic datatype for MindRecord to recognize.
+        Cast complex data type to basic datatype for versadf to recognize.
 
         Args:
             value: the TFRecord data type
 
         Returns:
-            str, which is MindRecord field type.
+            str, which is versadf field type.
         """
         tf_type_to_mr_type = {self.tf.string: "string",
                               self.tf.int8: "int32",
@@ -344,4 +344,4 @@ class TFRecordToMR:
         if value in tf_type_to_mr_type:
             return tf_type_to_mr_type[value]
 
-        raise ValueError("Type " + value + " is not supported in MindRecord.")
+        raise ValueError("Type " + value + " is not supported in versadf.")

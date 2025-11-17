@@ -1,23 +1,23 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_HEADER_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_HEADER_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_HEADER_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_HEADER_H_
 
 #include <memory>
 #include <set>
 #include <string>
 #include <utility>
 #include <vector>
-#include "minddata/mindrecord/include/common/shard_utils.h"
-#include "minddata/mindrecord/include/mindrecord_macro.h"
-#include "minddata/mindrecord/include/shard_index.h"
-#include "minddata/mindrecord/include/shard_page.h"
-#include "minddata/mindrecord/include/shard_schema.h"
-#include "minddata/mindrecord/include/shard_statistics.h"
+#include "minddata/versadf/include/common/shard_utils.h"
+#include "minddata/versadf/include/versadf_macro.h"
+#include "minddata/versadf/include/shard_index.h"
+#include "minddata/versadf/include/shard_page.h"
+#include "minddata/versadf/include/shard_schema.h"
+#include "minddata/versadf/include/shard_statistics.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API ShardHeader {
+namespace versadf {
+class versadf_API ShardHeader {
  public:
   ShardHeader();
 
@@ -182,7 +182,7 @@ class MINDRECORD_API ShardHeader {
   std::vector<std::shared_ptr<Statistics>> statistics_;
   std::vector<std::vector<std::shared_ptr<Page>>> pages_;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_HEADER_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_HEADER_H_

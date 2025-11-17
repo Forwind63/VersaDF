@@ -1,22 +1,22 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SCHEMA_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SCHEMA_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SCHEMA_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SCHEMA_H_
 
 #include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "minddata/mindrecord/include/common/log_adapter.h"
-#include "minddata/mindrecord/include/common/shard_pybind.h"
-#include "minddata/mindrecord/include/common/shard_utils.h"
-#include "minddata/mindrecord/include/mindrecord_macro.h"
+#include "minddata/versadf/include/common/log_adapter.h"
+#include "minddata/versadf/include/common/shard_pybind.h"
+#include "minddata/versadf/include/common/shard_utils.h"
+#include "minddata/versadf/include/versadf_macro.h"
 #include "pybind11/pybind11.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API Schema {
+namespace versadf {
+class versadf_API Schema {
  public:
   ~Schema() = default;
 
@@ -61,7 +61,7 @@ class MINDRECORD_API Schema {
   std::vector<std::string> blob_fields_;
   int64_t schema_id_ = -1;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SCHEMA_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SCHEMA_H_

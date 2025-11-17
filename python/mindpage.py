@@ -1,5 +1,5 @@
 """
-This module is to support reading page from MindRecord.
+This module is to support reading page from versadf.
 """
 
 from .core.shardsegment import ShardSegment
@@ -12,10 +12,10 @@ __all__ = ['MindPage']
 
 class MindPage:
     """
-    Class to read MindRecord files in pagination.
+    Class to read versadf files in pagination.
 
     Args:
-        file_name (Union[str, list[str]]): One of MindRecord files or a file list.
+        file_name (Union[str, list[str]]): One of versadf files or a file list.
         num_consumer (int, optional): The number of reader workers which load data. Default: ``4`` .
             It should not be smaller than 1 or larger than the number of processor cores.
 
@@ -24,10 +24,10 @@ class MindPage:
         ParamValueError: If `num_consumer` is not type int.
 
     Examples:
-        >>> from mindspore.mindrecord import MindPage
+        >>> from mindspore.versadf import MindPage
         >>>
-        >>> mindrecord_file = "/path/to/mindrecord/file"
-        >>> mind_page = MindPage(mindrecord_file)
+        >>> versadf_file = "/path/to/versadf/file"
+        >>> mind_page = MindPage(versadf_file)
         >>>
         >>> # get all the index fields
         >>> fields = mind_page.candidate_fields
@@ -74,7 +74,7 @@ class MindPage:
         Return candidate category fields.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.MindPage` .
+            Please refer to the Examples of :class:`mindspore.versadf.MindPage` .
 
         Returns:
             list[str], by which data could be grouped.
@@ -87,7 +87,7 @@ class MindPage:
         Setter / Getter function for category fields.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.MindPage` .
+            Please refer to the Examples of :class:`mindspore.versadf.MindPage` .
 
         Returns:
             list[str], by which data could be grouped.
@@ -100,7 +100,7 @@ class MindPage:
         Setter function for category field.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.MindPage` .
+            Please refer to the Examples of :class:`mindspore.versadf.MindPage` .
         """
         if not category_field or not isinstance(category_field, str):
             raise ParamTypeError('category_fields', 'str')
@@ -125,7 +125,7 @@ class MindPage:
              "key":"file_name_0"}
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.MindPage` .
+            Please refer to the Examples of :class:`mindspore.versadf.MindPage` .
 
         Returns:
             str, description of group information.
@@ -140,7 +140,7 @@ class MindPage:
         Query by category id in pagination.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.MindPage` .
+            Please refer to the Examples of :class:`mindspore.versadf.MindPage` .
 
         Args:
              category_id (int): Category id, referred to the return of `read_category_info` .
@@ -168,7 +168,7 @@ class MindPage:
         Query by category name in pagination.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.MindPage` .
+            Please refer to the Examples of :class:`mindspore.versadf.MindPage` .
 
         Args:
             category_name (str): String of category field's value,

@@ -1,14 +1,14 @@
 
 
-#include "minddata/mindrecord/include/shard_segment.h"
+#include "minddata/versadf/include/shard_segment.h"
 #include "utils/ms_utils.h"
 
 #include "include/securec.h"
-#include "minddata/mindrecord/include/common/shard_utils.h"
+#include "minddata/versadf/include/common/shard_utils.h"
 #include "pybind11/pybind11.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 ShardSegment::ShardSegment() { SetAllInIndex(false); }
 
 Status ShardSegment::GetCategoryFields(std::shared_ptr<vector<std::string>> *fields_ptr) {
@@ -275,7 +275,7 @@ Status ShardSegment::ReadAllAtPageById(int64_t category_id, int64_t page_no, int
           const unsigned char *data = nullptr;
           std::unique_ptr<unsigned char[]> data_ptr;
           uint64_t n_bytes = 0;
-          mindrecord::ColumnDataType column_data_type = mindrecord::ColumnNoDataType;
+          versadf::ColumnDataType column_data_type = versadf::ColumnNoDataType;
           uint64_t column_data_type_size = 1;
           std::vector<int64_t> column_shape;
           RETURN_IF_NOT_OK_MR(shard_column->GetColumnValueByName(blob_field, *images_ptr, labels[i], &data, &data_ptr,
@@ -327,5 +327,5 @@ std::string ShardSegment::CleanUp(std::string field_name) {
   field_name.pop_back();
   return field_name;
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

@@ -1,16 +1,16 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SHUFFLE_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SHUFFLE_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SHUFFLE_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SHUFFLE_H_
 
 #include <random>
 #include <string>
 
-#include "minddata/mindrecord/include/shard_operator.h"
+#include "minddata/versadf/include/shard_operator.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API ShardShuffle : public ShardOperator {
+namespace versadf {
+class versadf_API ShardShuffle : public ShardOperator {
  public:
   explicit ShardShuffle(uint32_t seed = 0, ShuffleType shuffle_type = kShuffleCategory);
 
@@ -42,7 +42,7 @@ class MINDRECORD_API ShardShuffle : public ShardOperator {
   bool reshuffle_each_epoch_;
   ShuffleType shuffle_type_;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SHUFFLE_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SHUFFLE_H_

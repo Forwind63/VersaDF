@@ -1,9 +1,9 @@
 
 
-#include "minddata/mindrecord/include/shard_sequential_sample.h"
+#include "minddata/versadf/include/shard_sequential_sample.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 ShardSequentialSample::ShardSequentialSample(int64_t n, int64_t offset)
     : ShardSample(n), offset_(offset), per_(0.0f), per_offset_(0.0f) {}
 
@@ -64,5 +64,5 @@ Status ShardSequentialSample::Execute(ShardTaskList &tasks) {
   return Status::OK();
 }
 
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

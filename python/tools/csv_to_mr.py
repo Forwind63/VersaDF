@@ -1,5 +1,5 @@
 """
-Csv format convert tool for MindRecord.
+Csv format convert tool for versadf.
 """
 from importlib import import_module
 import os
@@ -14,11 +14,11 @@ __all__ = ['CsvToMR']
 
 class CsvToMR:
     """
-    A class to transform from csv to MindRecord.
+    A class to transform from csv to versadf.
 
     Args:
         source (str): The file path of csv.
-        destination (str): The MindRecord file path to transform into, ensure that the directory is created in advance
+        destination (str): The versadf file path to transform into, ensure that the directory is created in advance
             and no file with the same name exists in the directory.
         columns_list(list[str], optional): A list of columns to be read. Default: ``None`` .
         partition_number (int, optional): The partition size, Default: ``1`` .
@@ -28,11 +28,11 @@ class CsvToMR:
         RuntimeError: If `columns_list` is invalid.
 
     Examples:
-        >>> from mindspore.mindrecord import CsvToMR
+        >>> from mindspore.versadf import CsvToMR
         >>>
         >>> csv_file = "/path/to/csv/file"
-        >>> mindrecord_file = "/path/to/mindrecord/file"
-        >>> csv_to_mr = CsvToMR(csv_file, mindrecord_file)
+        >>> versadf_file = "/path/to/versadf/file"
+        >>> csv_to_mr = CsvToMR(csv_file, versadf_file)
         >>> csv_to_mr.transform()
     """
 
@@ -122,7 +122,7 @@ class CsvToMR:
 
         csv_schema = self._get_schema(df)
 
-        logger.info("transformed MindRecord schema is: {}".format(csv_schema))
+        logger.info("transformed versadf schema is: {}".format(csv_schema))
 
         # set the header size
         self.writer.set_header_size(1 << 24)
@@ -163,14 +163,14 @@ class CsvToMR:
 
     def transform(self):
         """
-        Execute transformation from csv to MindRecord.
+        Execute transformation from csv to versadf.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.CsvToMR` .
+            Please refer to the Examples of :class:`mindspore.versadf.CsvToMR` .
 
         Raises:
             ParamTypeError: If index field is invalid.
-            MRMOpenError: If failed to open MindRecord file.
+            MRMOpenError: If failed to open versadf file.
             MRMValidateDataError: If data does not match blob fields.
             MRMSetHeaderError: If failed to set header.
             MRMWriteDatasetError: If failed to write dataset.

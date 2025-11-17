@@ -1,9 +1,9 @@
 
 
-#include "minddata/mindrecord/include/shard_pk_sample.h"
+#include "minddata/versadf/include/shard_pk_sample.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 ShardPkSample::ShardPkSample(const std::string &category_field, int64_t num_elements, int64_t num_samples)
     : ShardCategory(category_field, num_elements, std::numeric_limits<int64_t>::max(), true),
       shuffle_(false),
@@ -25,5 +25,5 @@ Status ShardPkSample::SufExecute(ShardTaskList &tasks) {
   }
   return Status::OK();
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

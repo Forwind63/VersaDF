@@ -1,10 +1,10 @@
 
 
-#include "minddata/mindrecord/include/shard_statistics.h"
+#include "minddata/versadf/include/shard_statistics.h"
 #include "pybind11/pybind11.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 std::shared_ptr<Statistics> Statistics::Build(std::string desc, const json &statistics) {
   // validate check
   if (!Validate(statistics)) {
@@ -72,5 +72,5 @@ bool Statistics::operator==(const Statistics &b) const {
   }
   return true;
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

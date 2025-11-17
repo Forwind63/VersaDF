@@ -1,17 +1,17 @@
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_OPERATOR_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_OPERATOR_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_OPERATOR_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_OPERATOR_H_
 
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "minddata/mindrecord/include/shard_task_list.h"
+#include "minddata/versadf/include/shard_task_list.h"
 #include "minddata/dataset/include/dataset/constants.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API ShardOperator {
+namespace versadf {
+class versadf_API ShardOperator {
  public:
   virtual ~ShardOperator() = default;
 
@@ -70,6 +70,6 @@ class MINDRECORD_API ShardOperator {
   std::vector<int64_t> shard_sample_count_;
   dataset::ShuffleMode shuffle_mode_ = dataset::ShuffleMode::kGlobal;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_OPERATOR_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_OPERATOR_H_

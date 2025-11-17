@@ -1,18 +1,18 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_CATEGORY_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_CATEGORY_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_CATEGORY_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_CATEGORY_H_
 
 #include <algorithm>
 #include <limits>
 #include <string>
 #include <utility>
 #include <vector>
-#include "minddata/mindrecord/include/shard_operator.h"
+#include "minddata/versadf/include/shard_operator.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API ShardCategory : public ShardOperator {
+namespace versadf {
+class versadf_API ShardCategory : public ShardOperator {
  public:
   explicit ShardCategory(const std::vector<std::pair<std::string, std::string>> &categories,
                          int64_t num_elements = std::numeric_limits<int64_t>::max(), bool replacement = false);
@@ -45,7 +45,7 @@ class MINDRECORD_API ShardCategory : public ShardOperator {
   int64_t num_categories_;
   bool replacement_;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_CATEGORY_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_CATEGORY_H_

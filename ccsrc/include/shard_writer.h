@@ -1,7 +1,7 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_WRITER_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_WRITER_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_WRITER_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_WRITER_H_
 
 #ifndef _MSC_VER
 #include <libgen.h>
@@ -23,17 +23,17 @@
 #include <utility>
 #include <vector>
 
-#include "minddata/mindrecord/include/common/log_adapter.h"
-#include "minddata/mindrecord/include/common/shard_utils.h"
-#include "minddata/mindrecord/include/shard_column.h"
-#include "minddata/mindrecord/include/shard_header.h"
-#include "minddata/mindrecord/include/shard_index.h"
+#include "minddata/versadf/include/common/log_adapter.h"
+#include "minddata/versadf/include/common/shard_utils.h"
+#include "minddata/versadf/include/shard_column.h"
+#include "minddata/versadf/include/shard_header.h"
+#include "minddata/versadf/include/shard_index.h"
 #include "pybind11/pybind11.h"
 #include "pybind11/stl.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API ShardWriter {
+namespace versadf {
+class versadf_API ShardWriter {
  public:
   ShardWriter();
 
@@ -243,7 +243,7 @@ class MINDRECORD_API ShardWriter {
   std::atomic<bool> flag_{false};
   std::atomic<int64_t> compression_size_;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_WRITER_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_WRITER_H_

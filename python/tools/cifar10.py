@@ -105,7 +105,7 @@ def restricted_loads(s):
 
 class Cifar10:
     """
-    Class to convert cifar10 to MindRecord.
+    Class to convert cifar10 to versadf.
 
     Args:
         path (str): cifar10 directory which contain data_batch_* and test_batch.

@@ -1,5 +1,5 @@
 """
-constants in MindRecord.
+constants in versadf.
 """
 
 # SYS ID will be used to create error code.

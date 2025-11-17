@@ -1,9 +1,9 @@
 
 
-#include "minddata/mindrecord/include/shard_index.h"
+#include "minddata/versadf/include/shard_index.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 // table name for index
 const char TABLENAME[] = "index_table";
 
@@ -15,5 +15,5 @@ void Index::AddIndexField(const int64_t &schemaId, const std::string &field) {
 
 // Get attribute list
 std::vector<std::pair<uint64_t, std::string>> Index::GetFields() { return fields_; }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

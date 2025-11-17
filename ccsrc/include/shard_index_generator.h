@@ -1,7 +1,7 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_INDEX_GENERATOR_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_INDEX_GENERATOR_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_INDEX_GENERATOR_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_INDEX_GENERATOR_H_
 
 #include <fstream>
 #include <iostream>
@@ -11,14 +11,14 @@
 #include <tuple>
 #include <utility>
 #include <vector>
-#include "minddata/mindrecord/include/shard_header.h"
+#include "minddata/versadf/include/shard_header.h"
 #include "./sqlite3.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 using INDEX_FIELDS = std::vector<std::tuple<std::string, std::string, std::string>>;
 using ROW_DATA = std::vector<std::vector<std::tuple<std::string, std::string, std::string>>>;
-class MINDRECORD_API ShardIndexGenerator {
+class versadf_API ShardIndexGenerator {
  public:
   explicit ShardIndexGenerator(const std::string &file_path, bool append = false);
 
@@ -104,6 +104,6 @@ class MINDRECORD_API ShardIndexGenerator {
   std::atomic_bool write_success_;
   std::vector<std::pair<uint64_t, std::string>> fields_;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_INDEX_GENERATOR_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_INDEX_GENERATOR_H_

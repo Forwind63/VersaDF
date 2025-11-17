@@ -1,10 +1,10 @@
 """
-Introduction to mindrecord:
+Introduction to versadf:
 
-MindRecord is a module to implement reading, writing, search and
+versadf is a module to implement reading, writing, search and
 converting for MindSpore format dataset. Users could load(modify)
-mindrecord data through FileReader(FileWriter). Users could also
-convert other format dataset to mindrecord data through
+versadf data through FileReader(FileWriter). Users could also
+convert other format dataset to versadf data through
 corresponding sub-module.
 """
 

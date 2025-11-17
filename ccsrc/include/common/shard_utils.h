@@ -1,7 +1,7 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_COMMON_SHARD_UTILS_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_COMMON_SHARD_UTILS_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_COMMON_SHARD_UTILS_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_COMMON_SHARD_UTILS_H_
 
 #ifndef _CRT_RAND_S
 #define _CRT_RAND_S
@@ -34,7 +34,7 @@
 #include <utility>
 #include <vector>
 
-#include "minddata/mindrecord/include/shard_error.h"
+#include "minddata/versadf/include/shard_error.h"
 #include "nlohmann/json.hpp"
 #include "./sqlite3.h"
 
@@ -46,7 +46,7 @@
 #endif
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 using json = nlohmann::json;
 
 const int kInt0 = 0;
@@ -212,9 +212,9 @@ Status GetDiskSize(const std::string &str_dir, const DiskSizeType &disk_type, st
 /// \return max concurrency
 uint32_t GetMaxThreadNum();
 
-/// \brief get absolute path of all mindrecord files
-/// \param path path to one fo mindrecord files
-/// \param addresses relative path of all mindrecord files
+/// \brief get absolute path of all versadf files
+/// \param path path to one fo versadf files
+/// \param addresses relative path of all versadf files
 /// \param ds shared ptr of vector of absolute path
 /// \return Status
 Status GetDatasetFiles(const std::string &path, const json &addresses, std::shared_ptr<std::vector<std::string>> *ds);
@@ -222,7 +222,7 @@ Status GetDatasetFiles(const std::string &path, const json &addresses, std::shar
 /// \brief get random
 /// \return std::mt19937
 std::mt19937 GetRandomDevice();
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_COMMON_SHARD_UTILS_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_COMMON_SHARD_UTILS_H_

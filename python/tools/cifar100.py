@@ -57,7 +57,7 @@ def restricted_loads(s):
 
 class Cifar100:
     """
-    Class to convert cifar100 to MindRecord.
+    Class to convert cifar100 to versadf.
 
     Cifar100 contains train & test data. There are 500 training images and
     100 testing images per class. The 100 classes in the CIFAR-100 are grouped

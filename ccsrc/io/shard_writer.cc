@@ -1,13 +1,13 @@
 
 
-#include "minddata/mindrecord/include/shard_writer.h"
+#include "minddata/versadf/include/shard_writer.h"
 #include "utils/file_utils.h"
 #include "utils/ms_utils.h"
-#include "minddata/mindrecord/include/common/shard_utils.h"
+#include "minddata/versadf/include/common/shard_utils.h"
 #include "include/securec.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 ShardWriter::ShardWriter()
     : shard_count_(1), header_size_(kDefaultHeaderSize), page_size_(kDefaultPageSize), row_count_(0), schema_count_(1) {
   compression_size_ = 0;
@@ -23,8 +23,8 @@ Status ShardWriter::GetFullPathFromFileName(const std::vector<std::string> &path
   // Get full path from file name
   for (const auto &path : paths) {
     CHECK_FAIL_RETURN_UNEXPECTED_MR(CheckIsValidUtf8(path),
-                                    "Invalid file, mindrecord file name: " + path +
-                                      " contains invalid uft-8 character. Please rename mindrecord file name.");
+                                    "Invalid file, versadf file name: " + path +
+                                      " contains invalid uft-8 character. Please rename versadf file name.");
     // get realpath
     std::optional<std::string> dir = "";
     std::optional<std::string> local_file_name = "";
@@ -36,7 +36,7 @@ Status ShardWriter::GetFullPathFromFileName(const std::vector<std::string> &path
     auto realpath = FileUtils::GetRealPath(dir.value().c_str());
     CHECK_FAIL_RETURN_UNEXPECTED_MR(
       realpath.has_value(),
-      "Invalid dir, failed to get the realpath of mindrecord file dir. Please check path: " + dir.value());
+      "Invalid dir, failed to get the realpath of versadf file dir. Please check path: " + dir.value());
 
     std::optional<std::string> whole_path = "";
     FileUtils::ConcatDirAndFileName(&realpath, &local_file_name, &whole_path);
@@ -58,14 +58,14 @@ Status ShardWriter::OpenDataFiles(bool append, bool overwrite) {
 
     auto realpath = FileUtils::GetRealPath(dir.value().c_str());
     CHECK_FAIL_RETURN_UNEXPECTED_MR(
-      realpath.has_value(), "Invalid file, failed to get the realpath of mindrecord files. Please check file: " + file);
+      realpath.has_value(), "Invalid file, failed to get the realpath of versadf files. Please check file: " + file);
 
     std::optional<std::string> whole_path = "";
     FileUtils::ConcatDirAndFileName(&realpath, &local_file_name, &whole_path);
 
     std::shared_ptr<std::fstream> fs = std::make_shared<std::fstream>();
     if (!append) {
-      // if not append && mindrecord or db file exist
+      // if not append && versadf or db file exist
       fs->open(whole_path.value(), std::ios::in | std::ios::binary);
       std::ifstream fs_db(whole_path.value() + ".db");
       if (fs->good() || fs_db.good()) {
@@ -75,50 +75,50 @@ Status ShardWriter::OpenDataFiles(bool append, bool overwrite) {
           auto res1 = std::remove(whole_path.value().c_str());
           CHECK_FAIL_RETURN_UNEXPECTED_MR(!std::ifstream(whole_path.value()) == true,
                                           "Invalid file, failed to remove the old files when trying to overwrite "
-                                          "mindrecord files. Please check file path and permission: " +
+                                          "versadf files. Please check file path and permission: " +
                                             file);
           if (res1 == 0) {
-            MS_LOG(WARNING) << "Succeed to remove the old mindrecord files, path: " << file;
+            MS_LOG(WARNING) << "Succeed to remove the old versadf files, path: " << file;
           }
           auto db_file = whole_path.value() + ".db";
           auto res2 = std::remove(db_file.c_str());
           CHECK_FAIL_RETURN_UNEXPECTED_MR(!std::ifstream(whole_path.value() + ".db") == true,
-                                          "Invalid file, failed to remove the old mindrecord meta files when trying to "
-                                          "overwrite mindrecord files. Please check file path and permission: " +
+                                          "Invalid file, failed to remove the old versadf meta files when trying to "
+                                          "overwrite versadf files. Please check file path and permission: " +
                                             file + ".db");
           if (res2 == 0) {
-            MS_LOG(WARNING) << "Succeed to remove the old mindrecord metadata files, path: " << file + ".db";
+            MS_LOG(WARNING) << "Succeed to remove the old versadf metadata files, path: " << file + ".db";
           }
         } else {
           RETURN_STATUS_UNEXPECTED_MR(
-            "Invalid file, mindrecord files already exist. Please check file path: " + file +
+            "Invalid file, versadf files already exist. Please check file path: " + file +
             +".\nIf you do not want to keep the files, set the 'overwrite' parameter to True and try again.");
         }
       } else {
         fs->close();
         fs_db.close();
       }
-      // open the mindrecord file to write
+      // open the versadf file to write
       fs->open(whole_path.value().data(), std::ios::out | std::ios::in | std::ios::binary | std::ios::trunc);
       if (!fs->good()) {
         fs->close();
         RETURN_STATUS_UNEXPECTED_MR(
-          "Invalid file, failed to open files for writing mindrecord files. Please check file path, permission and "
+          "Invalid file, failed to open files for writing versadf files. Please check file path, permission and "
           "open file limit: " +
           file);
       }
     } else {
-      // open the mindrecord file to append
+      // open the versadf file to append
       fs->open(whole_path.value().data(), std::ios::out | std::ios::in | std::ios::binary);
       if (!fs->good()) {
         fs->close();
         RETURN_STATUS_UNEXPECTED_MR(
-          "Invalid file, failed to open files for appending mindrecord files. Please check file path, permission and "
+          "Invalid file, failed to open files for appending versadf files. Please check file path, permission and "
           "open file limit: " +
           file);
       }
     }
-    MS_LOG(INFO) << "Succeed to open mindrecord shard file, path: " << file;
+    MS_LOG(INFO) << "Succeed to open versadf shard file, path: " << file;
     file_streams_.push_back(fs);
   }
   return Status::OK();
@@ -197,9 +197,9 @@ Status ShardWriter::Commit() {
 Status ShardWriter::SetShardHeader(std::shared_ptr<ShardHeader> header_data) {
   CHECK_FAIL_RETURN_UNEXPECTED_MR(
     header_data->GetSchemaCount() > 0,
-    "Invalid data, schema is not found in header, please use 'add_schema' to add a schema for new mindrecord files.");
+    "Invalid data, schema is not found in header, please use 'add_schema' to add a schema for new versadf files.");
   RETURN_IF_NOT_OK_MR(header_data->InitByFiles(file_paths_));
-  // set fields in mindrecord when empty
+  // set fields in versadf when empty
   std::vector<std::pair<uint64_t, std::string>> fields = header_data->GetFields();
   if (fields.empty()) {
     MS_LOG(DEBUG) << "Index field is not set, it will be generated automatically.";
@@ -264,7 +264,7 @@ void ShardWriter::DeleteErrorData(std::map<uint64_t, std::vector<json>> &raw_dat
       int loc = subMg.first;
       std::string message = subMg.second;
       MS_LOG(ERROR) << "Invalid input, the " << loc + 1
-                    << " th data provided by user is invalid while writing mindrecord files. Please fix the error: "
+                    << " th data provided by user is invalid while writing versadf files. Please fix the error: "
                     << message;
       (void)delete_set.insert(loc);
     }
@@ -303,7 +303,7 @@ Status ShardWriter::CheckDataTypeAndValue(const std::string &key, const json &va
       (data_type == "float32" && !data[key].is_number_float()) ||
       (data_type == "float64" && !data[key].is_number_float()) || (data_type == "string" && !data[key].is_string())) {
     std::string message = "Invalid input, for field: " + key + ", type: " + data_type +
-                          " and value: " + data[key].dump() + " do not match while writing mindrecord files.";
+                          " and value: " + data[key].dump() + " do not match while writing versadf files.";
     PopulateMutexErrorData(i, message, err_raw_data);
     RETURN_STATUS_UNEXPECTED_MR(message);
   }
@@ -313,7 +313,7 @@ Status ShardWriter::CheckDataTypeAndValue(const std::string &key, const json &va
     if (static_cast<int64_t>(temp_value) < static_cast<int64_t>(std::numeric_limits<int32_t>::min()) &&
         static_cast<int64_t>(temp_value) > static_cast<int64_t>(std::numeric_limits<int32_t>::max())) {
       std::string message = "Invalid input, for field: " + key + "and its type: " + data_type +
-                            ", value: " + data[key].dump() + " is out of range while writing mindrecord files.";
+                            ", value: " + data[key].dump() + " is out of range while writing versadf files.";
       PopulateMutexErrorData(i, message, err_raw_data);
       RETURN_STATUS_UNEXPECTED_MR(message);
     }
@@ -569,7 +569,7 @@ Status ShardWriter::WriteRawDataPreCheck(std::map<uint64_t, std::vector<json>> &
     RETURN_IF_NOT_OK_MR(GetDiskSize(file_paths_[0], kFreeSize, &size_ptr));
     CHECK_FAIL_RETURN_UNEXPECTED_MR(
       *size_ptr >= kMinFreeDiskSize,
-      "No free disk to be used while writing mindrecord files, available free disk size: " + std::to_string(*size_ptr));
+      "No free disk to be used while writing versadf files, available free disk size: " + std::to_string(*size_ptr));
   }
   // compress blob
   if (shard_column_->CheckCompressBlob()) {
@@ -1147,7 +1147,7 @@ Status ShardWriter::SetRawDataSize(const std::vector<std::vector<uint8_t>> &bin_
   }
   CHECK_FAIL_RETURN_SYNTAX_ERROR_MR(*std::max_element(raw_data_size_.begin(), raw_data_size_.end()) <= page_size_,
                                     "Invalid data, Page size: " + std::to_string(page_size_) +
-                                      " is too small to save a raw row. Please try to use the mindrecord api "
+                                      " is too small to save a raw row. Please try to use the versadf api "
                                       "'set_page_size(value)' to enable larger page size, and the value range is in [" +
                                       std::to_string(kMinPageSize) + " bytes, " + std::to_string(kMaxPageSize) +
                                       " bytes].");
@@ -1160,7 +1160,7 @@ Status ShardWriter::SetBlobDataSize(const std::vector<std::vector<uint8_t>> &blo
                        [](const std::vector<uint8_t> &row) { return kInt64Len + row.size(); });
   CHECK_FAIL_RETURN_SYNTAX_ERROR_MR(*std::max_element(blob_data_size_.begin(), blob_data_size_.end()) <= page_size_,
                                     "Invalid data, Page size: " + std::to_string(page_size_) +
-                                      " is too small to save a blob row. Please try to use the mindrecord api "
+                                      " is too small to save a blob row. Please try to use the versadf api "
                                       "'set_page_size(value)' to enable larger page size, and the value range is in [" +
                                       std::to_string(kMinPageSize) + " bytes, " + std::to_string(kMaxPageSize) +
                                       " bytes].");
@@ -1195,5 +1195,5 @@ Status ShardWriter::Initialize(const std::unique_ptr<ShardWriter> *writer_ptr,
   RETURN_IF_NOT_OK_MR((*writer_ptr)->SetPageSize(kDefaultPageSize));
   return Status::OK();
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

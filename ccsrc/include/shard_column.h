@@ -1,17 +1,17 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_COLUMN_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_COLUMN_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_COLUMN_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_COLUMN_H_
 
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
-#include "minddata/mindrecord/include/shard_header.h"
+#include "minddata/versadf/include/shard_header.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 const uint64_t kUnsignedOne = 1;
 const uint64_t kBitsOfByte = 8;
 const uint64_t kDataTypeBits = 2;
@@ -43,7 +43,7 @@ const std::unordered_map<std::string, ColumnDataType> ColumnDataTypeMap = {
   {"bytes", ColumnBytes}, {"string", ColumnString},   {"int32", ColumnInt32},
   {"int64", ColumnInt64}, {"float32", ColumnFloat32}, {"float64", ColumnFloat64}};
 
-class MINDRECORD_API ShardColumn {
+class versadf_API ShardColumn {
  public:
   explicit ShardColumn(const std::shared_ptr<ShardHeader> &shard_header, bool compress_integer = true);
   explicit ShardColumn(const json &schema_json, bool compress_integer = true);
@@ -155,7 +155,7 @@ class MINDRECORD_API ShardColumn {
   bool has_compress_blob_;                                    // if has compress blob
   uint64_t num_blob_column_;                                  // number of blob columns
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_COLUMN_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_COLUMN_H_

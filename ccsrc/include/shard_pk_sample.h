@@ -1,18 +1,18 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_PK_SAMPLE_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_PK_SAMPLE_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_PK_SAMPLE_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_PK_SAMPLE_H_
 
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-#include "minddata/mindrecord/include/shard_shuffle.h"
-#include "minddata/mindrecord/include/shard_category.h"
+#include "minddata/versadf/include/shard_shuffle.h"
+#include "minddata/versadf/include/shard_category.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API ShardPkSample : public ShardCategory {
+namespace versadf {
+class versadf_API ShardPkSample : public ShardCategory {
  public:
   ShardPkSample(const std::string &category_field, int64_t num_elements, int64_t num_samples);
 
@@ -34,7 +34,7 @@ class MINDRECORD_API ShardPkSample : public ShardCategory {
   std::shared_ptr<ShardShuffle> shuffle_op_;
   int64_t num_samples_;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_PK_SAMPLE_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_PK_SAMPLE_H_

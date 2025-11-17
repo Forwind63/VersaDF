@@ -1,17 +1,17 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SEQUENTIAL_SAMPLE_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SEQUENTIAL_SAMPLE_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SEQUENTIAL_SAMPLE_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SEQUENTIAL_SAMPLE_H_
 
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-#include "minddata/mindrecord/include/shard_sample.h"
+#include "minddata/versadf/include/shard_sample.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API ShardSequentialSample : public ShardSample {
+namespace versadf {
+class versadf_API ShardSequentialSample : public ShardSample {
  public:
   ShardSequentialSample(int64_t n, int64_t offset);
 
@@ -30,7 +30,7 @@ class MINDRECORD_API ShardSequentialSample : public ShardSample {
   float per_;
   float per_offset_;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SEQUENTIAL_SAMPLE_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SEQUENTIAL_SAMPLE_H_

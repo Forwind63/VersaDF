@@ -1,18 +1,18 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SAMPLE_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SAMPLE_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SAMPLE_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SAMPLE_H_
 
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-#include "minddata/mindrecord/include/shard_operator.h"
-#include "minddata/mindrecord/include/shard_shuffle.h"
+#include "minddata/versadf/include/shard_operator.h"
+#include "minddata/versadf/include/shard_shuffle.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API ShardSample : public ShardOperator {
+namespace versadf {
+class versadf_API ShardSample : public ShardOperator {
  public:
   explicit ShardSample(int64_t n);
 
@@ -66,7 +66,7 @@ class MINDRECORD_API ShardSample : public ShardOperator {
   SamplerType sampler_type_;
   int64_t offset_;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SAMPLE_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SAMPLE_H_

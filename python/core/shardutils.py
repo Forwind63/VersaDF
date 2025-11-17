@@ -1,5 +1,5 @@
 """
-This module is to write data into mindrecord.
+This module is to write data into versadf.
 """
 import os
 import sys
@@ -10,8 +10,8 @@ from inspect import signature
 from functools import wraps
 
 import numpy as np
-import mindspore._c_mindrecord as ms
-from mindspore.mindrecord.common.exceptions import ParamValueError, MRMUnsupportedSchemaError
+import mindspore._c_versadf as ms
+from mindspore.versadf.common.exceptions import ParamValueError, MRMUnsupportedSchemaError
 
 SUCCESS = ms.MSRStatus.SUCCESS
 FAILED = ms.MSRStatus.FAILED

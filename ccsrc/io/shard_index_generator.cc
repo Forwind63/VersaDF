@@ -1,11 +1,11 @@
 
-#include "minddata/mindrecord/include/shard_index_generator.h"
+#include "minddata/versadf/include/shard_index_generator.h"
 
 #include "utils/file_utils.h"
 #include "utils/ms_utils.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 ShardIndexGenerator::ShardIndexGenerator(const std::string &file_path, bool append)
     : file_path_(file_path),
       append_(append),
@@ -23,7 +23,7 @@ Status ShardIndexGenerator::Build() {
   ShardHeader header = ShardHeader();
   RETURN_IF_NOT_OK_MR(header.BuildDataset(*ds));
   shard_header_ = header;
-  MS_LOG(INFO) << "Initialize header from mindrecord file for index successfully.";
+  MS_LOG(INFO) << "Initialize header from versadf file for index successfully.";
   return Status::OK();
 }
 
@@ -152,7 +152,7 @@ Status ShardIndexGenerator::CheckDatabase(const std::string &shard_address, sqli
   auto realpath = FileUtils::GetRealPath(dir.value().c_str());
   CHECK_FAIL_RETURN_UNEXPECTED_MR(
     realpath.has_value(),
-    "Invalid file, failed to get the realpath of mindrecord files. Please check file: " + shard_address);
+    "Invalid file, failed to get the realpath of versadf files. Please check file: " + shard_address);
 
   std::optional<std::string> whole_path = "";
   FileUtils::ConcatDirAndFileName(&realpath, &local_file_name, &whole_path);
@@ -161,7 +161,7 @@ Status ShardIndexGenerator::CheckDatabase(const std::string &shard_address, sqli
   if (!append_ && fin.good()) {
     fin.close();
     RETURN_STATUS_UNEXPECTED_MR(
-      "Invalid file, mindrecord meta files already exist. Please check file path: " + shard_address +
+      "Invalid file, versadf meta files already exist. Please check file path: " + shard_address +
       ".\nIf you do not want to keep the files, set the 'overwrite' parameter to True and try again.");
   }
   fin.close();
@@ -175,7 +175,7 @@ Status ShardIndexGenerator::CheckDatabase(const std::string &shard_address, sqli
   }
 
   if (sqlite3_open_v2(whole_path_utf8.data(), db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr)) {
-    RETURN_STATUS_UNEXPECTED_MR("[Internal ERROR] Failed to open mindrecord meta file: " + shard_address + ", " +
+    RETURN_STATUS_UNEXPECTED_MR("[Internal ERROR] Failed to open versadf meta file: " + shard_address + ", " +
                                 sqlite3_errmsg(*db));
   }
   MS_LOG(DEBUG) << "Open meta file successfully";
@@ -488,13 +488,13 @@ Status ShardIndexGenerator::ExecuteTransaction(const int &shard_no, sqlite3 *db,
   auto realpath = FileUtils::GetRealPath(shard_address.c_str());
   CHECK_FAIL_RETURN_UNEXPECTED_MR(
     realpath.has_value(),
-    "Invalid file, failed to get the realpath of mindrecord files. Please check file path: " + shard_address);
+    "Invalid file, failed to get the realpath of versadf files. Please check file path: " + shard_address);
   std::fstream in;
   in.open(realpath.value(), std::ios::in | std::ios::binary);
   if (!in.good()) {
     in.close();
     RETURN_STATUS_UNEXPECTED_MR(
-      "Invalid file, failed to open mindrecord files. Please check file path, permission and open files limit(ulimit "
+      "Invalid file, failed to open versadf files. Please check file path, permission and open files limit(ulimit "
       "-a): " +
       shard_address);
   }
@@ -560,7 +560,7 @@ Status ShardIndexGenerator::WriteToDatabase() {
   for (size_t t = 0; t < threads.capacity(); t++) {
     threads[t].join();
   }
-  CHECK_FAIL_RETURN_UNEXPECTED_MR(write_success_, "[Internal ERROR] Failed to write mindrecord meta files.");
+  CHECK_FAIL_RETURN_UNEXPECTED_MR(write_success_, "[Internal ERROR] Failed to write versadf meta files.");
   return Status::OK();
 }
 
@@ -610,11 +610,11 @@ void ShardIndexGenerator::DatabaseWriter() {
 }
 
 Status ShardIndexGenerator::Finalize(const std::vector<std::string> file_names) {
-  CHECK_FAIL_RETURN_UNEXPECTED_MR(!file_names.empty(), "[Internal ERROR] the size of mindrecord files is 0.");
+  CHECK_FAIL_RETURN_UNEXPECTED_MR(!file_names.empty(), "[Internal ERROR] the size of versadf files is 0.");
   ShardIndexGenerator sg{file_names[0]};
   RETURN_IF_NOT_OK_MR(sg.Build());
   RETURN_IF_NOT_OK_MR(sg.WriteToDatabase());
   return Status::OK();
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

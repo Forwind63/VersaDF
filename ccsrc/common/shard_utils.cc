@@ -1,6 +1,6 @@
 
 
-#include "minddata/mindrecord/include/common/shard_utils.h"
+#include "minddata/versadf/include/common/shard_utils.h"
 #include "utils/file_utils.h"
 #include "utils/ms_utils.h"
 #include "include/securec.h"
@@ -10,7 +10,7 @@
 #endif
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 // split a string using a character
 std::vector<std::string> StringSplit(const std::string &field, char separator) {
   std::vector<std::string> res;
@@ -51,7 +51,7 @@ Status GetFileName(const std::string &path, std::shared_ptr<std::string> *fn_ptr
   FileUtils::SplitDirAndFileName(path, &prefix_path, &file_name);
   if (!file_name.has_value()) {
     RETURN_STATUS_UNEXPECTED_MR(
-      "Invalid file, failed to get the filename of mindrecord file. Please check file path: " + path);
+      "Invalid file, failed to get the filename of versadf file. Please check file path: " + path);
   }
   *fn_ptr = std::make_shared<std::string>(file_name.value());
 
@@ -70,7 +70,7 @@ Status GetParentDir(const std::string &path, std::shared_ptr<std::string> *pd_pt
 
   auto realpath = FileUtils::GetRealPath(prefix_path.value().c_str());
   CHECK_FAIL_RETURN_UNEXPECTED_MR(
-    realpath.has_value(), "Invalid file, failed to get the parent dir of mindrecord file. Please check file: " + path);
+    realpath.has_value(), "Invalid file, failed to get the parent dir of versadf file. Please check file: " + path);
 
   *pd_ptr = std::make_shared<std::string>(realpath.value() + kPathSeparator);
   return Status::OK();
@@ -111,13 +111,13 @@ Status CheckFile(const std::string &path) {
   if (stat(common::SafeCStr(path), &s) == 0) {
 #endif
     if (S_ISDIR(s.st_mode)) {
-      RETURN_STATUS_UNEXPECTED_MR("Invalid file, " + path + " is not a mindrecord file, but got directory.");
+      RETURN_STATUS_UNEXPECTED_MR("Invalid file, " + path + " is not a versadf file, but got directory.");
     }
     return Status::OK();
   }
   RETURN_STATUS_UNEXPECTED_MR(
-    "Invalid file, mindrecord file: " + path +
-    " can not be found. Please check whether the mindrecord file exists and do not rename the mindrecord file.");
+    "Invalid file, versadf file: " + path +
+    " can not be found. Please check whether the versadf file exists and do not rename the versadf file.");
 }
 
 Status GetDiskSize(const std::string &str_dir, const DiskSizeType &disk_type, std::shared_ptr<uint64_t> *size_ptr) {
@@ -191,5 +191,5 @@ std::mt19937 GetRandomDevice() {
 #endif
   return random_device;
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

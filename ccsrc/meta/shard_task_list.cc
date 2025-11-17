@@ -1,13 +1,13 @@
 
 
-#include "minddata/mindrecord/include/shard_task_list.h"
+#include "minddata/versadf/include/shard_task_list.h"
 
-#include "minddata/mindrecord/include/common/shard_utils.h"
+#include "minddata/versadf/include/common/shard_utils.h"
 #include "utils/ms_utils.h"
 
 namespace mindspore {
-namespace mindrecord {
-// when mindrecord is slow load mode, the shuffle size is 1000,000
+namespace versadf {
+// when versadf is slow load mode, the shuffle size is 1000,000
 const int64_t ShuffleSize = 1000000;
 
 GeneratorIds::GeneratorIds() : partitioned_shard_sample_count_(), partition_index_(0), partition_sample_index_(0) {}
@@ -28,10 +28,10 @@ std::vector<int64_t> GeneratorIds::GetNextSampleIds(const bool &need_shuffle, co
   // CommonTask, 0, 16680, 17777
   // CommonTask, 0, 0, 15
   std::vector<int64_t> ids;
-  std::string env_mindrecord_shard_by_block = common::GetEnv("MS_DEV_MINDRECORD_SHARD_BY_BLOCK");
-  (void)transform(env_mindrecord_shard_by_block.begin(), env_mindrecord_shard_by_block.end(),
-                  env_mindrecord_shard_by_block.begin(), ::tolower);
-  if (env_mindrecord_shard_by_block == "true") {
+  std::string env_versadf_shard_by_block = common::GetEnv("MS_DEV_versadf_SHARD_BY_BLOCK");
+  (void)transform(env_versadf_shard_by_block.begin(), env_versadf_shard_by_block.end(),
+                  env_versadf_shard_by_block.begin(), ::tolower);
+  if (env_versadf_shard_by_block == "true") {
     // Distributed by block
     for (int32_t i = partition_index_; i < partitioned_shard_sample_count_.size(); i++) {
       for (int64_t j = partitioned_shard_sample_count_[i].start + partition_sample_index_;
@@ -137,8 +137,8 @@ void ShardTaskList::TaskListSwap(ShardTaskList &orig_tasks, ShardTaskList &new_t
   // When swapping, if the orig_tasks contains fields that need to be preserved after the swap, then swapping with a
   // new_tasks that does not have those fields will result in clobbering/losing the data after the swap.
   // The task_list_ should not be lost/clobbered.
-  // This function can be called in the middle of mindrecord's epoch, when orig_tasks.task_list_ is still being
-  // used by mindrecord op's worker threads. So don't touch its task_list_ since this field should be preserved anyways.
+  // This function can be called in the middle of versadf's epoch, when orig_tasks.task_list_ is still being
+  // used by versadf op's worker threads. So don't touch its task_list_ since this field should be preserved anyways.
 
   std::swap(orig_tasks.categories, new_tasks.categories);
   std::swap(orig_tasks.permutation_, new_tasks.permutation_);
@@ -168,10 +168,10 @@ int64_t ShardTaskList::SizeAfterSampling() const {
 
   // slow load mode
   int64_t count = 0;
-  std::string env_mindrecord_shard_by_block = common::GetEnv("MS_DEV_MINDRECORD_SHARD_BY_BLOCK");
-  (void)transform(env_mindrecord_shard_by_block.begin(), env_mindrecord_shard_by_block.end(),
-                  env_mindrecord_shard_by_block.begin(), ::tolower);
-  if (env_mindrecord_shard_by_block == "true") {
+  std::string env_versadf_shard_by_block = common::GetEnv("MS_DEV_versadf_SHARD_BY_BLOCK");
+  (void)transform(env_versadf_shard_by_block.begin(), env_versadf_shard_by_block.end(),
+                  env_versadf_shard_by_block.begin(), ::tolower);
+  if (env_versadf_shard_by_block == "true") {
     // Distributed by block
     for (int32_t i = 0; i < partitioned_shard_sample_count_.size(); i++) {
       count += partitioned_shard_sample_count_[i].end - partitioned_shard_sample_count_[i].start;
@@ -231,7 +231,7 @@ ShardTask ShardTaskList::GetTaskByID(int64_t id) {
     return {TaskType::kPaddedTask, std::make_tuple(shard_id, row_id), {}, json()};
   }
 
-  // get the original shard_id which is in order with mindrecord files
+  // get the original shard_id which is in order with versadf files
   shard_id = file_ids_[shard_id];
 
   // get the row id in the shard
@@ -400,10 +400,10 @@ void ShardTaskList::SetPartitionedShardSampleCount(
 void ShardTaskList::UpdatePartitionedShardSampleCountByNumSamples(const int64_t &num_samples) {
   auto count = num_samples;
   std::vector<PartitionedShardSampleCount> new_partitioned_shard_sample_count = {};
-  std::string env_mindrecord_shard_by_block = common::GetEnv("MS_DEV_MINDRECORD_SHARD_BY_BLOCK");
-  (void)transform(env_mindrecord_shard_by_block.begin(), env_mindrecord_shard_by_block.end(),
-                  env_mindrecord_shard_by_block.begin(), ::tolower);
-  if (env_mindrecord_shard_by_block == "true") {
+  std::string env_versadf_shard_by_block = common::GetEnv("MS_DEV_versadf_SHARD_BY_BLOCK");
+  (void)transform(env_versadf_shard_by_block.begin(), env_versadf_shard_by_block.end(),
+                  env_versadf_shard_by_block.begin(), ::tolower);
+  if (env_versadf_shard_by_block == "true") {
     for (int32_t i = 0; i < partitioned_shard_sample_count_.size(); i++) {
       auto start = partitioned_shard_sample_count_[i].start;
       if (partitioned_shard_sample_count_[i].end - start <= count) {
@@ -450,5 +450,5 @@ void ShardTaskList::UpdatePartitionedShardSampleCountByNumSamples(const int64_t 
 std::vector<int64_t> ShardTaskList::GetNextSampleIds() {
   return generator_ids_.GetNextSampleIds(need_shuffle_, shuffle_seed_);
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

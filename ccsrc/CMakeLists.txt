@@ -10,7 +10,7 @@ aux_source_directory(common DIR_LIB_SRCS)
 
 if(MSVC)
     # define this for msvc:dllexport or dllimport
-    add_compile_definitions(BUILDING_MINDRECORD_DLL)
+    add_compile_definitions(BUILDING_versadf_DLL)
 endif()
 
 # set(CMAKE_CXX_COMPILER "g++")
@@ -32,34 +32,34 @@ endif()
 
 # add shared link library
 set_property(SOURCE ${DIR_LIB_SRCS} PROPERTY COMPILE_DEFINITIONS SUBMODULE_ID=mindspore::SubModuleId::SM_MD)
-add_library(mindrecord_obj OBJECT ${DIR_LIB_SRCS})
-add_library(_c_mindrecord SHARED $<TARGET_OBJECTS:mindrecord_obj>)
-add_dependencies(_c_mindrecord md_log_adapter)
+add_library(versadf_obj OBJECT ${DIR_LIB_SRCS})
+add_library(_c_versadf SHARED $<TARGET_OBJECTS:versadf_obj>)
+add_dependencies(_c_versadf md_log_adapter)
 
-set_target_properties(_c_mindrecord PROPERTIES
+set_target_properties(_c_versadf PROPERTIES
     PREFIX "${PYTHON_MODULE_PREFIX}"
     SUFFIX "${PYTHON_MODULE_EXTENSION}"
     )
 
 # add link library
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    target_link_libraries(_c_mindrecord PRIVATE mindspore::sqlite mindspore::protobuf)
+    target_link_libraries(_c_versadf PRIVATE mindspore::sqlite mindspore::protobuf)
 else()
-    target_link_libraries(_c_mindrecord PRIVATE mindspore::sqlite mindspore::pybind11_module mindspore::securec
+    target_link_libraries(_c_versadf PRIVATE mindspore::sqlite mindspore::pybind11_module mindspore::securec
                                                 mindspore::protobuf)
 endif()
-target_link_libraries(_c_mindrecord PRIVATE mindspore_core)
-target_link_libraries(_c_mindrecord PRIVATE md_log_adapter)
+target_link_libraries(_c_versadf PRIVATE mindspore_core)
+target_link_libraries(_c_versadf PRIVATE md_log_adapter)
 if(USE_GLOG)
-    target_link_libraries(_c_mindrecord PRIVATE mindspore::glog)
+    target_link_libraries(_c_versadf PRIVATE mindspore::glog)
 else()
     if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-        target_link_options(_c_mindrecord PRIVATE -Wl,-init,mindspore_log_init)
+        target_link_options(_c_versadf PRIVATE -Wl,-init,mindspore_log_init)
     elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-        set_target_properties(_c_mindrecord PROPERTIES MACOSX_RPATH ON)
+        set_target_properties(_c_versadf PROPERTIES MACOSX_RPATH ON)
     endif()
 endif()
 
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin" AND NOT MSLITE_ENABLE_CLOUD_MIND_DATA)
-    set_target_properties(_c_mindrecord PROPERTIES INSTALL_RPATH ${ORIGIN_PATH}:${ORIGIN_PATH}/lib)
+    set_target_properties(_c_versadf PROPERTIES INSTALL_RPATH ${ORIGIN_PATH}:${ORIGIN_PATH}/lib)
 endif()

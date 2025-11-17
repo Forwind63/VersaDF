@@ -1,26 +1,26 @@
 """
-Introduction of MindRecord.
+Introduction of versadf.
 
-MindRecord is an efficient data storage and reading module provided by MindSpore.
-This module provides several methods to help users convert various public datasets into the MindRecord format,
-as well as methods to read, write, and retrieve data from MindRecord files.
+versadf is an efficient data storage and reading module provided by MindSpore.
+This module provides several methods to help users convert various public datasets into the versadf format,
+as well as methods to read, write, and retrieve data from versadf files.
 
 .. image:: data_conversion_concept_en.png
 
 MindSpore format data allows for more convenient saving and loading of data,
 with the goal of normalizing user datasets and optimizing performance for different data scenarios.
-Using the MindRecord data format can reduce disk I/O and network I/O overhead,
+Using the versadf data format can reduce disk I/O and network I/O overhead,
 thereby providing a better data loading experience.
 
-Users can generate MindRecord format data files using `mindspore.mindrecord.FileWriter` and load MindRecord format
+Users can generate versadf format data files using `mindspore.versadf.FileWriter` and load versadf format
 datasets using `mindspore.dataset.MindDataset <https://www.mindspore.cn/docs/en/master/api_python/dataset/
 mindspore.dataset.MindDataset.html>`_ .
 
-Users can also convert datasets from other formats to the MindRecord format.
+Users can also convert datasets from other formats to the versadf format.
 For more details, please refer to
-`Converting Dataset to MindRecord <https://www.mindspore.cn/tutorials/en/master/dataset/record.html>`_ .
-Additionally, MindRecord supports file encryption, decryption,
-and integrity checks to ensure the security of MindRecord format datasets.
+`Converting Dataset to versadf <https://www.mindspore.cn/tutorials/en/master/dataset/record.html>`_ .
+Additionally, versadf supports file encryption, decryption,
+and integrity checks to ensure the security of versadf format datasets.
 """
 
 from .filewriter import FileWriter

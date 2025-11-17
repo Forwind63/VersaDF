@@ -1,11 +1,11 @@
 
 
-#include "minddata/mindrecord/include/shard_sample.h"
+#include "minddata/versadf/include/shard_sample.h"
 
 #include "utils/ms_utils.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 ShardSample::ShardSample(int64_t n)
     : numerator_(0),
       denominator_(0),
@@ -69,10 +69,10 @@ inline void ComputeDistributed(int64_t partition_id, int64_t no_of_samples, int6
                                ShardTaskList *tasks, ShardTaskList *new_tasks) {
   int64_t count = 0;
   auto total_no = tasks->sample_ids_.size();
-  std::string env_mindrecord_shard_by_block = common::GetEnv("MS_DEV_MINDRECORD_SHARD_BY_BLOCK");
-  (void)transform(env_mindrecord_shard_by_block.begin(), env_mindrecord_shard_by_block.end(),
-                  env_mindrecord_shard_by_block.begin(), ::tolower);
-  if (env_mindrecord_shard_by_block == "true") {
+  std::string env_versadf_shard_by_block = common::GetEnv("MS_DEV_versadf_SHARD_BY_BLOCK");
+  (void)transform(env_versadf_shard_by_block.begin(), env_versadf_shard_by_block.end(),
+                  env_versadf_shard_by_block.begin(), ::tolower);
+  if (env_versadf_shard_by_block == "true") {
     // Distributed by block
     for (int64_t i = partition_id * taking; i < (partition_id + 1) * taking; i++) {
       if (no_of_samples != 0 && count == no_of_samples) {
@@ -276,11 +276,11 @@ Status ShardSample::UpdatePartitionWhenSlowMode(ShardTaskList &tasks) {
 
 Status ShardSample::UpdatePartitionWhenSlowModeBySlice(ShardTaskList &tasks) {
   // distribtued sample by slice when load mode is slow load
-  // mindrecord files
-  // mindrecord file 0 has 50 samples
-  // mindrecord file 1 has 40 samples
-  // mindrecord file 2 has 60 samples
-  // mindrecord file 3 has 30 samples
+  // versadf files
+  // versadf file 0 has 50 samples
+  // versadf file 1 has 40 samples
+  // versadf file 2 has 60 samples
+  // versadf file 3 has 30 samples
   // Assuming this is an 3-card training
   // card 0 : kCommonTask, shard_id=0, start=0, end=50, step=3
   // card 0 : kCommonTask, shard_id=1, start=51, end=90, step=3
@@ -437,10 +437,10 @@ Status ShardSample::Execute(ShardTaskList &tasks) {
     return UpdateTasks(tasks, taking);
   }
 
-  std::string env_mindrecord_shard_by_block = common::GetEnv("MS_DEV_MINDRECORD_SHARD_BY_BLOCK");
-  (void)transform(env_mindrecord_shard_by_block.begin(), env_mindrecord_shard_by_block.end(),
-                  env_mindrecord_shard_by_block.begin(), ::tolower);
-  if (env_mindrecord_shard_by_block == "true") {
+  std::string env_versadf_shard_by_block = common::GetEnv("MS_DEV_versadf_SHARD_BY_BLOCK");
+  (void)transform(env_versadf_shard_by_block.begin(), env_versadf_shard_by_block.end(),
+                  env_versadf_shard_by_block.begin(), ::tolower);
+  if (env_versadf_shard_by_block == "true") {
     return UpdatePartitionWhenSlowMode(tasks);
   } else {
     return UpdatePartitionWhenSlowModeBySlice(tasks);
@@ -453,5 +453,5 @@ Status ShardSample::SufExecute(ShardTaskList &tasks) {
   }
   return Status::OK();
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

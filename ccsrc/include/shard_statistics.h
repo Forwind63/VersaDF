@@ -1,23 +1,23 @@
 
 
 #pragma once
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_STATISTICS_H
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_STATISTICS_H
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_STATISTICS_H
+#define MINDSPORE_CCSRC_MINDDATA_versadf_STATISTICS_H
 
 #include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "minddata/mindrecord/include/common/log_adapter.h"
-#include "minddata/mindrecord/include/common/shard_pybind.h"
-#include "minddata/mindrecord/include/common/shard_utils.h"
-#include "minddata/mindrecord/include/mindrecord_macro.h"
+#include "minddata/versadf/include/common/log_adapter.h"
+#include "minddata/versadf/include/common/shard_pybind.h"
+#include "minddata/versadf/include/common/shard_utils.h"
+#include "minddata/versadf/include/versadf_macro.h"
 #include "pybind11/pybind11.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API Statistics {
+namespace versadf {
+class versadf_API Statistics {
  public:
   /// \brief save the statistic and its description
   /// \param[in] desc the statistic's description
@@ -61,7 +61,7 @@ class MINDRECORD_API Statistics {
   json statistics_;
   int64_t statistics_id_ = -1;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_STATISTICS_H
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_STATISTICS_H

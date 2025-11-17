@@ -1,7 +1,7 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INDEX_H
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INDEX_H
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INDEX_H
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INDEX_H
 #pragma once
 
 #include <stdio.h>
@@ -11,20 +11,20 @@
 #include <utility>
 #include <vector>
 
-#include "minddata/mindrecord/include/common/log_adapter.h"
-#include "minddata/mindrecord/include/common/shard_utils.h"
-#include "minddata/mindrecord/include/mindrecord_macro.h"
-#include "minddata/mindrecord/include/shard_schema.h"
+#include "minddata/versadf/include/common/log_adapter.h"
+#include "minddata/versadf/include/common/shard_utils.h"
+#include "minddata/versadf/include/versadf_macro.h"
+#include "minddata/versadf/include/shard_schema.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 using std::cin;
 using std::endl;
 using std::pair;
 using std::string;
 using std::vector;
 
-class MINDRECORD_API Index {
+class versadf_API Index {
  public:
   Index();
 
@@ -46,7 +46,7 @@ class MINDRECORD_API Index {
   string database_name_;
   string table_name_;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INDEX_H
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INDEX_H

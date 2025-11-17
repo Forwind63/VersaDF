@@ -1,10 +1,10 @@
 
 
-#include "minddata/mindrecord/include/shard_schema.h"
+#include "minddata/versadf/include/shard_schema.h"
 #include "utils/ms_utils.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 std::shared_ptr<Schema> Schema::Build(std::string desc, const json &schema) {
   // validate check
   if (!Validate(schema)) {
@@ -135,11 +135,11 @@ bool Schema::Validate(json schema) {
   return true;
 }
 
-bool Schema::operator==(const mindrecord::Schema &b) const {
+bool Schema::operator==(const versadf::Schema &b) const {
   if (this->GetDesc() != b.GetDesc() || this->GetSchema() != b.GetSchema()) {
     return false;
   }
   return true;
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

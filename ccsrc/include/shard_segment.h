@@ -1,7 +1,7 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SEGMENT_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SEGMENT_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SEGMENT_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SEGMENT_H_
 
 #include <map>
 #include <memory>
@@ -9,17 +9,17 @@
 #include <tuple>
 #include <utility>
 #include <vector>
-#include "minddata/mindrecord/include/shard_reader.h"
+#include "minddata/versadf/include/shard_reader.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 using CATEGORY_INFO = std::vector<std::tuple<int, std::string, int>>;
 using PAGES = std::vector<std::tuple<std::vector<uint8_t>, json>>;
 using PAGES_LOAD = std::vector<std::tuple<std::vector<uint8_t>, pybind11::object>>;
 using PAGES_WITH_BLOBS = std::vector<std::tuple<std::map<std::string, std::vector<uint8_t>>, json>>;
 using PAGES_LOAD_WITH_BLOBS = std::vector<std::tuple<std::map<std::string, std::vector<uint8_t>>, pybind11::object>>;
 
-class MINDRECORD_API ShardSegment : public ShardReader {
+class versadf_API ShardSegment : public ShardReader {
  public:
   ShardSegment();
 
@@ -84,7 +84,7 @@ class MINDRECORD_API ShardSegment : public ShardReader {
   std::string current_category_field_;
   const uint32_t kStartFieldId = 9;
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_SEGMENT_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_SEGMENT_H_

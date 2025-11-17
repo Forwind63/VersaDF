@@ -1,10 +1,10 @@
 """
-This module is to write data into mindrecord.
+This module is to write data into versadf.
 """
 import numpy as np
-import mindspore._c_mindrecord as ms
+import mindspore._c_versadf as ms
 from mindspore import log as logger
-from mindspore.mindrecord.common.exceptions import MRMOpenError, MRMOpenForAppendError, MRMInvalidHeaderSizeError, \
+from mindspore.versadf.common.exceptions import MRMOpenError, MRMOpenForAppendError, MRMInvalidHeaderSizeError, \
     MRMInvalidPageSizeError, MRMSetHeaderError, MRMWriteDatasetError, MRMCommitError
 
 __all__ = ['ShardWriter']
@@ -14,7 +14,7 @@ class ShardWriter:
     """
     Wrapper class which is represent shardWrite class in c++ module.
 
-    The class would write MindRecord File series.
+    The class would write versadf File series.
     """
 
     def __init__(self):
@@ -36,7 +36,7 @@ class ShardWriter:
 
     def open(self, paths, override):
         """
-        Open a new MindRecord File and prepare to write raw data.
+        Open a new versadf File and prepare to write raw data.
 
         Args:
              paths (list[str]): List of file path.
@@ -45,7 +45,7 @@ class ShardWriter:
             MSRStatus, SUCCESS or FAILED.
 
         Raises:
-            MRMOpenError: If failed to open MindRecord File.
+            MRMOpenError: If failed to open versadf File.
         """
         ret = self._writer.open(paths, False, override)
         if ret != ms.MSRStatus.SUCCESS:
@@ -56,7 +56,7 @@ class ShardWriter:
 
     def open_for_append(self, path):
         """
-        Open a existed MindRecord File and prepare to append raw data.
+        Open a existed versadf File and prepare to append raw data.
 
         Args:
             path (str): String of file path.
@@ -65,7 +65,7 @@ class ShardWriter:
             MSRStatus, SUCCESS or FAILED.
 
         Raises:
-            MRMOpenForAppendError: If failed to append MindRecord File.
+            MRMOpenForAppendError: If failed to append versadf File.
         """
         ret = self._writer.open_for_append(path)
         if ret != ms.MSRStatus.SUCCESS:
@@ -155,7 +155,7 @@ class ShardWriter:
         """
 
         if data == []:
-            raise RuntimeError("There is no valid data which can be written by 'write_raw_data' to mindrecord file. " +
+            raise RuntimeError("There is no valid data which can be written by 'write_raw_data' to versadf file. " +
                                "Please check the abnormal input data indicated in the warning log above.")
 
         blob_data = []

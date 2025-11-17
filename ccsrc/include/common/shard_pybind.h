@@ -1,11 +1,11 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_COMMON_SHARD_PYBIND_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_COMMON_SHARD_PYBIND_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_COMMON_SHARD_PYBIND_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_COMMON_SHARD_PYBIND_H_
 
 #include <string>
 #include <vector>
-#include "minddata/mindrecord/include/common/shard_utils.h"
+#include "minddata/versadf/include/common/shard_utils.h"
 #include "pybind11/pybind11.h"
 
 namespace py = pybind11;
@@ -23,4 +23,4 @@ py::object FromJsonImpl(const json &j);
 json ToJsonImpl(const py::handle &obj);
 }  // namespace detail
 }  // namespace nlohmann
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_COMMON_SHARD_PYBIND_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_COMMON_SHARD_PYBIND_H_

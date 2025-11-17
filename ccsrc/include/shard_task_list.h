@@ -1,7 +1,7 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_TASK_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_TASK_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_TASK_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_TASK_H_
 
 #include <algorithm>
 #include <iostream>
@@ -9,11 +9,11 @@
 #include <tuple>
 #include <utility>
 #include <vector>
-#include "minddata/mindrecord/include/common/shard_utils.h"
-#include "minddata/mindrecord/include/mindrecord_macro.h"
+#include "minddata/versadf/include/common/shard_utils.h"
+#include "minddata/versadf/include/versadf_macro.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 
 // The data struct is as below:
 // 1. TaskType: kCommonTask / kPaddedTask
@@ -34,7 +34,7 @@ using SampleMeta = std::tuple<std::vector<uint64_t>, json>;
 
 // The data struct is used to cache meta info when load mode is slow load
 // task_type: kCommonTask / kPaddedTask
-// shard_id: the index of mindrecord files
+// shard_id: the index of versadf files
 // start: the global index of all the samples
 // end: the global index of all the samples
 // step: the step size of the sample id increasing sequentially on each card. Default value: 1, the step size should be
@@ -47,7 +47,7 @@ struct PartitionedShardSampleCount {
   int64_t step = 1;
 };
 
-class MINDRECORD_API GeneratorIds {
+class versadf_API GeneratorIds {
  public:
   GeneratorIds();
   void SetShardSampleCount(const std::vector<PartitionedShardSampleCount> &partitioned_shard_sample_count);
@@ -68,7 +68,7 @@ class MINDRECORD_API GeneratorIds {
 // fast mode: use ShardTask to cache meta data
 // lazy mode: use TaskInfo to cache meta data
 // slow mode: just cache shard_id:sample_count
-class MINDRECORD_API ShardTaskList {
+class versadf_API ShardTaskList {
  public:
   ShardTaskList();
 
@@ -232,7 +232,7 @@ inline void ShardTaskList::ResizeTask(const int64_t &size) {
     sample_meta_list_.resize(size);
   }
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_TASK_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_TASK_H_

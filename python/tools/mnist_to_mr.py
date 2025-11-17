@@ -1,5 +1,5 @@
 """
-Mnist convert tool for MindRecord
+Mnist convert tool for versadf
 """
 
 from importlib import import_module
@@ -18,13 +18,13 @@ __all__ = ['MnistToMR']
 
 class MnistToMR:
     """
-    A class to transform from Mnist to MindRecord.
+    A class to transform from Mnist to versadf.
 
     Args:
         source (str): Directory that contains t10k-images-idx3-ubyte.gz,
                       train-images-idx3-ubyte.gz, t10k-labels-idx1-ubyte.gz
                       and train-labels-idx1-ubyte.gz.
-        destination (str): MindRecord file path to transform into, ensure that the directory is created in advance and
+        destination (str): versadf file path to transform into, ensure that the directory is created in advance and
             no file with the same name exists in the directory.
         partition_number (int, optional): The partition size. Default: ``1`` .
 
@@ -32,11 +32,11 @@ class MnistToMR:
         ValueError: If `source` , `destination` , `partition_number` is invalid.
 
     Examples:
-        >>> from mindspore.mindrecord import MnistToMR
+        >>> from mindspore.versadf import MnistToMR
         >>>
         >>> mnist_dir = "/path/to/mnist"
-        >>> mindrecord_file = "/path/to/mindrecord/file"
-        >>> mnist_to_mr = MnistToMR(mnist_dir, mindrecord_file)
+        >>> versadf_file = "/path/to/versadf/file"
+        >>> mnist_to_mr = MnistToMR(mnist_dir, versadf_file)
         >>> mnist_to_mr.transform()
     """
 
@@ -67,8 +67,8 @@ class MnistToMR:
         else:
             raise ValueError("The parameter partition_number must be int")
 
-        self.writer_train = FileWriter("{}_train.mindrecord".format(destination), self.partition_number)
-        self.writer_test = FileWriter("{}_test.mindrecord".format(destination), self.partition_number)
+        self.writer_train = FileWriter("{}_train.versadf".format(destination), self.partition_number)
+        self.writer_test = FileWriter("{}_test.versadf".format(destination), self.partition_number)
 
         self.mnist_schema_json = {"label": {"type": "int64"}, "data": {"type": "bytes"}}
 
@@ -83,14 +83,14 @@ class MnistToMR:
 
     def transform(self):
         """
-        Execute transformation from Mnist to MindRecord.
+        Execute transformation from Mnist to versadf.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.MnistToMR` .
+            Please refer to the Examples of :class:`mindspore.versadf.MnistToMR` .
 
         Raises:
             ParamTypeError: If index field is invalid.
-            MRMOpenError: If failed to open MindRecord file.
+            MRMOpenError: If failed to open versadf file.
             MRMValidateDataError: If data does not match blob fields.
             MRMSetHeaderError: If failed to set header.
             MRMWriteDatasetError: If failed to write dataset.
@@ -150,14 +150,14 @@ class MnistToMR:
 
     def _transform_train(self):
         """
-        Execute transformation from Mnist train part to MindRecord.
+        Execute transformation from Mnist train part to versadf.
 
         Returns:
             SUCCESS or FAILED.
         """
         t0_total = time.time()
 
-        logger.info("transformed MindRecord schema is: {}".format(self.mnist_schema_json))
+        logger.info("transformed versadf schema is: {}".format(self.mnist_schema_json))
 
         # set the header size
         self.writer_train.set_header_size(1 << 24)
@@ -198,14 +198,14 @@ class MnistToMR:
 
     def _transform_test(self):
         """
-        Execute transformation from Mnist test part to MindRecord.
+        Execute transformation from Mnist test part to versadf.
 
         Returns:
             SUCCESS or FAILED.
         """
         t0_total = time.time()
 
-        logger.info("transformed MindRecord schema is: {}".format(self.mnist_schema_json))
+        logger.info("transformed versadf schema is: {}".format(self.mnist_schema_json))
 
         # set the header size
         self.writer_test.set_header_size(1 << 24)

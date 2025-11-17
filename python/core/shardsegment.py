@@ -1,10 +1,10 @@
 """
-This module is to read page from mindrecord.
+This module is to read page from versadf.
 """
-import mindspore._c_mindrecord as ms
+import mindspore._c_versadf as ms
 from mindspore import log as logger
-from mindspore.mindrecord.core.shardutils import populate_data, SUCCESS
-from mindspore.mindrecord.core.shardheader import ShardHeader
+from mindspore.versadf.core.shardutils import populate_data, SUCCESS
+from mindspore.versadf.core.shardheader import ShardHeader
 
 __all__ = ['ShardSegment']
 
@@ -13,7 +13,7 @@ class ShardSegment:
     """
     Wrapper class which is represent ShardSegment class in c++ module.
 
-    The class would query data from MindRecord File in pagination.
+    The class would query data from versadf File in pagination.
 
     """
     def __init__(self):
@@ -26,7 +26,7 @@ class ShardSegment:
         Initialize the ShardSegment.
 
         Args:
-            file_name (str, list[str]): File names of MindRecord File.
+            file_name (str, list[str]): File names of versadf File.
             num_consumer (int): Number of worker threads which load data in parallel. Default: 4.
             columns (list[str]): List of fields which correspond data would be read.
             operator(int): Reserved parameter for operators. Default: ``None``.
@@ -35,7 +35,7 @@ class ShardSegment:
             MSRStatus, SUCCESS or FAILED.
 
         Raises:
-            MRMOpenError: If failed to open MindRecord File.
+            MRMOpenError: If failed to open versadf File.
         """
         self._columns = columns if columns else []
         operator = operator if operator else []

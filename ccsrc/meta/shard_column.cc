@@ -1,12 +1,12 @@
 
 
-#include "minddata/mindrecord/include/shard_column.h"
+#include "minddata/versadf/include/shard_column.h"
 
 #include "utils/ms_utils.h"
-#include "minddata/mindrecord/include/common/shard_utils.h"
+#include "minddata/versadf/include/common/shard_utils.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 ShardColumn::ShardColumn(const std::shared_ptr<ShardHeader> &shard_header, bool compress_integer) {
   auto first_schema = shard_header->GetSchemas()[0];
   json schema_json = first_schema->GetSchema();
@@ -481,5 +481,5 @@ int64_t ShardColumn::BytesLittleToMinIntType(const std::vector<uint8_t> &bytes_a
   }
   return i_out;
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

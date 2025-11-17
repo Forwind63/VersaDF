@@ -1,9 +1,9 @@
 
 
-#include "minddata/mindrecord/include/shard_distributed_sample.h"
+#include "minddata/versadf/include/shard_distributed_sample.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 ShardDistributedSample::ShardDistributedSample(int num_shards, int shard_id, int64_t no_of_padded_samples,
                                                dataset::ShuffleMode shuffle_mode, uint32_t seed, int64_t no_of_samples,
                                                int64_t offset)
@@ -62,5 +62,5 @@ Status ShardDistributedSample::PreExecute(ShardTaskList &tasks) {
   }
   return Status::OK();
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

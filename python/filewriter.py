@@ -1,5 +1,5 @@
 """
-This module is to write data into mindrecord.
+This module is to write data into versadf.
 """
 import os
 import platform
@@ -25,15 +25,15 @@ __all__ = ['FileWriter']
 
 class FileWriter:
     r"""
-    Class to write user defined raw data into MindRecord files.
+    Class to write user defined raw data into versadf files.
 
     Note:
-        After the MindRecord file is generated, if the file name is changed,
+        After the versadf file is generated, if the file name is changed,
         the file may fail to be read.
 
     Args:
-        file_name (str): File name of MindRecord file.
-        shard_num (int, optional): The Number of MindRecord files.
+        file_name (str): File name of versadf file.
+        shard_num (int, optional): The Number of versadf files.
             It should be between [1, 1000]. Default: ``1`` .
         overwrite (bool, optional): Whether to overwrite if the file already exists. Default: ``False`` .
 
@@ -41,9 +41,9 @@ class FileWriter:
         ParamValueError: If `file_name` or `shard_num` or `overwrite` is invalid.
 
     Examples:
-        >>> from mindspore.mindrecord import FileWriter
+        >>> from mindspore.versadf import FileWriter
         >>>
-        >>> writer = FileWriter(file_name="test.mindrecord", shard_num=1, overwrite=True)
+        >>> writer = FileWriter(file_name="test.versadf", shard_num=1, overwrite=True)
         >>> schema_json = {"file_name": {"type": "string"}, "label": {"type": "int32"}, "data": {"type": "bytes"}}
         >>> writer.add_schema(schema_json, "test_schema")
         >>> indexes = ["file_name", "label"]
@@ -107,32 +107,32 @@ class FileWriter:
     @classmethod
     def open_for_append(cls, file_name):
         r"""
-        Open MindRecord file and get ready to append data.
+        Open versadf file and get ready to append data.
 
         Args:
-            file_name (str): String of MindRecord file name.
+            file_name (str): String of versadf file name.
 
         Returns:
-            FileWriter, file writer object for the opened MindRecord file.
+            FileWriter, file writer object for the opened versadf file.
 
         Raises:
             ParamValueError: If file_name is invalid.
             FileNameError: If path contains invalid characters.
-            MRMOpenError: If failed to open MindRecord file.
+            MRMOpenError: If failed to open versadf file.
             MRMOpenForAppendError: If failed to open file for appending data.
 
         Examples:
-            >>> from mindspore.mindrecord import FileWriter
+            >>> from mindspore.versadf import FileWriter
             >>>
             >>> data = [{"file_name": "0.jpg", "label": 0,
             ...          "data": b"\x10c\xb3w\xa8\xee$o&<q\x8c\x8e(\xa2\x90\x90\x96\xbc\xb1\x1e\xd4QER\x13?\xff"}]
-            >>> writer = FileWriter(file_name="test.mindrecord", shard_num=1, overwrite=True)
+            >>> writer = FileWriter(file_name="test.versadf", shard_num=1, overwrite=True)
             >>> schema_json = {"file_name": {"type": "string"}, "label": {"type": "int32"}, "data": {"type": "bytes"}}
             >>> writer.add_schema(schema_json, "test_schema")
             >>> writer.write_raw_data(data)
             >>> writer.commit()
             >>>
-            >>> write_append = FileWriter.open_for_append("test.mindrecord")
+            >>> write_append = FileWriter.open_for_append("test.versadf")
             >>> for i in range(9):
             ...     data = [{"file_name": str(i+1) + ".jpg", "label": i,
             ...              "data": b"\x10c\xb3w\xa8\xee$o&<q\x8c\x8e(\xa2\x90\x90\x96\xbc\xb1\x1e\xd4QER\x13?\xff"}]
@@ -181,9 +181,9 @@ class FileWriter:
         The schema is added to describe the raw data to be written.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.FileWriter` .
+            Please refer to the Examples of :class:`mindspore.versadf.FileWriter` .
 
-        .. list-table:: The data types supported by MindRecord.
+        .. list-table:: The data types supported by versadf.
            :widths: 25 25 50
            :header-rows: 1
 
@@ -252,7 +252,7 @@ class FileWriter:
             If the function is not called, the fields of the primitive type
             in schema are set as indexes by default.
 
-            Please refer to the Examples of :class:`mindspore.mindrecord.FileWriter` .
+            Please refer to the Examples of :class:`mindspore.versadf.FileWriter` .
 
         Args:
             index_fields (list[str]): fields from schema.
@@ -275,11 +275,11 @@ class FileWriter:
 
     def write_raw_data(self, raw_data, parallel_writer=False):
         """
-        Convert raw data into a series of consecutive MindRecord \
+        Convert raw data into a series of consecutive versadf \
         files after the raw data is verified against the schema.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.FileWriter` .
+            Please refer to the Examples of :class:`mindspore.versadf.FileWriter` .
 
         Args:
            raw_data (list[dict]): List of raw data.
@@ -288,7 +288,7 @@ class FileWriter:
 
         Raises:
             ParamTypeError: If index field is invalid.
-            MRMOpenError: If failed to open MindRecord file.
+            MRMOpenError: If failed to open versadf file.
             MRMValidateDataError: If data does not match blob fields.
             MRMSetHeaderError: If failed to set header.
             MRMWriteDatasetError: If failed to write dataset.
@@ -313,9 +313,9 @@ class FileWriter:
             if not isinstance(raw_data, list):
                 raise ParamTypeError('raw_data', 'list')
             if self._flush and not self._append:
-                raise RuntimeError("Not allowed to call `write_raw_data` on flushed MindRecord files." \
-                                   "When creating new MindRecord files, please remove `commit` before " \
-                                   "`write_raw_data`. In other cases, when appending to existing MindRecord files, " \
+                raise RuntimeError("Not allowed to call `write_raw_data` on flushed versadf files." \
+                                   "When creating new versadf files, please remove `commit` before " \
+                                   "`write_raw_data`. In other cases, when appending to existing versadf files, " \
                                    "please call `open_for_append` first and then `write_raw_data`.")
             for each_raw in raw_data:
                 if not isinstance(each_raw, dict):
@@ -357,7 +357,7 @@ class FileWriter:
             except queue.Full:
                 if time.time() - start_time > check_interval:
                     start_time = time.time()
-                    logger.warning("Because there are too few MindRecord file shards, the efficiency of parallel " \
+                    logger.warning("Because there are too few versadf file shards, the efficiency of parallel " \
                                    "writing is too low. You can stop the current task and add the parameter " \
                                    "`shard_num` of `FileWriter` to upgrade the task.")
                 self.check_worker_status(self._workers_loop_index)
@@ -379,7 +379,7 @@ class FileWriter:
         """
         Set the size of header which contains shard information, schema information, \
         page meta information, etc. The larger a header, the more data \
-        the MindRecord file can store. If the size of header is larger than \
+        the versadf file can store. If the size of header is larger than \
         the default size (16MB), users need to call the API to set a proper size.
 
         Args:
@@ -390,8 +390,8 @@ class FileWriter:
             MRMInvalidHeaderSizeError: If failed to set header size.
 
         Examples:
-            >>> from mindspore.mindrecord import FileWriter
-            >>> writer = FileWriter(file_name="test.mindrecord", shard_num=1)
+            >>> from mindspore.versadf import FileWriter
+            >>> writer = FileWriter(file_name="test.versadf", shard_num=1)
             >>> writer.set_header_size(1 << 25) # 32MB
         """
         self._writer.set_header_size(header_size)
@@ -412,8 +412,8 @@ class FileWriter:
             MRMInvalidPageSizeError: If failed to set page size.
 
         Examples:
-            >>> from mindspore.mindrecord import FileWriter
-            >>> writer = FileWriter(file_name="test.mindrecord", shard_num=1)
+            >>> from mindspore.versadf import FileWriter
+            >>> writer = FileWriter(file_name="test.versadf", shard_num=1)
             >>> writer.set_page_size(1 << 26)  # 64MB
         """
         self._writer.set_page_size(page_size)
@@ -423,10 +423,10 @@ class FileWriter:
         Flush data in memory to disk and generate the corresponding database files.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.FileWriter` .
+            Please refer to the Examples of :class:`mindspore.versadf.FileWriter` .
 
         Raises:
-            MRMOpenError: If failed to open MindRecord file.
+            MRMOpenError: If failed to open versadf file.
             MRMSetHeaderError: If failed to set header.
             MRMIndexGeneratorError: If failed to create index generator.
             MRMGenerateIndexError: If failed to write to database.
@@ -449,7 +449,7 @@ class FileWriter:
                 self._generator.build()
                 self._generator.write_to_db()
         else:
-            # maybe a empty mindrecord, so need check _writers
+            # maybe a empty versadf, so need check _writers
             if self._writers is None:
                 self._writers = [None] * len(self._paths)
                 for i, path in enumerate(self._paths):
@@ -460,12 +460,12 @@ class FileWriter:
             self._parallel_commit()
 
         # change file mode first, because encrypt may failed
-        mindrecord_files = []
+        versadf_files = []
         index_files = []
         for item in self._paths:
             if os.path.exists(item):
                 os.chmod(item, stat.S_IRUSR | stat.S_IWUSR)
-                mindrecord_files.append(item)
+                versadf_files.append(item)
             index_file = item + ".db"
             if os.path.exists(index_file):
                 os.chmod(index_file, stat.S_IRUSR | stat.S_IWUSR)
@@ -473,13 +473,13 @@ class FileWriter:
 
         for item in self._paths:
             if os.path.exists(item):
-                # encrypt the mindrecord file
+                # encrypt the versadf file
                 if _get_enc_key() is not None:
                     encrypt(item, _get_enc_key(), _get_enc_mode())
                     encrypt(item + ".db", _get_enc_key(), _get_enc_mode())
 
-        logger.info("The list of mindrecord files created are: {}, and the list of index files are: {}".format(
-            mindrecord_files, index_files))
+        logger.info("The list of versadf files created are: {}, and the list of index files are: {}".format(
+            versadf_files, index_files))
 
     def _index_worker(self, i):
         """The worker do the index generator"""
@@ -678,7 +678,7 @@ class FileWriter:
                 ret = self._writers[i].commit()
                 if ret != SUCCESS:
                     msg_queue.put("Error")
-                    raise RuntimeError("Commit the {}th shard of MindRecord file failed.".format(i))
+                    raise RuntimeError("Commit the {}th shard of versadf file failed.".format(i))
 
                 logger.info("Send Success flag from worker: {} to master: {}.".format(os.getpid(), os.getppid()))
                 msg_queue.put("Success")

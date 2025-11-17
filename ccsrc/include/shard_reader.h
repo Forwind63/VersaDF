@@ -1,7 +1,7 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_READER_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_READER_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_READER_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_READER_H_
 
 #include <signal.h>
 #if !defined(_WIN32) && !defined(_WIN64) && !defined(__APPLE__)
@@ -26,26 +26,26 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
-#include "minddata/mindrecord/include/common/log_adapter.h"
-#include "minddata/mindrecord/include/common/shard_utils.h"
-#include "minddata/mindrecord/include/shard_category.h"
-#include "minddata/mindrecord/include/shard_column.h"
-#include "minddata/mindrecord/include/shard_distributed_sample.h"
-#include "minddata/mindrecord/include/shard_index_generator.h"
-#include "minddata/mindrecord/include/shard_operator.h"
-#include "minddata/mindrecord/include/shard_pk_sample.h"
-#include "minddata/mindrecord/include/shard_reader.h"
-#include "minddata/mindrecord/include/shard_sample.h"
-#include "minddata/mindrecord/include/shard_shuffle.h"
+#include "minddata/versadf/include/common/log_adapter.h"
+#include "minddata/versadf/include/common/shard_utils.h"
+#include "minddata/versadf/include/shard_category.h"
+#include "minddata/versadf/include/shard_column.h"
+#include "minddata/versadf/include/shard_distributed_sample.h"
+#include "minddata/versadf/include/shard_index_generator.h"
+#include "minddata/versadf/include/shard_operator.h"
+#include "minddata/versadf/include/shard_pk_sample.h"
+#include "minddata/versadf/include/shard_reader.h"
+#include "minddata/versadf/include/shard_sample.h"
+#include "minddata/versadf/include/shard_shuffle.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 using ROW_GROUPS = std::pair<std::vector<std::vector<std::vector<uint64_t>>>, std::vector<std::vector<json>>>;
 using ROW_GROUP_BRIEF = std::tuple<std::string, int, uint64_t, std::vector<std::vector<uint64_t>>, std::vector<json>>;
 using TASK_CONTENT = std::pair<TaskType, std::vector<std::tuple<std::vector<uint8_t>, json>>>;
 const int kNumBatchInMap = 1000;  // iterator buffer size in row-reader mode
 
-class MINDRECORD_API ShardReader {
+class versadf_API ShardReader {
  public:
   ShardReader();
 
@@ -200,7 +200,7 @@ class MINDRECORD_API ShardReader {
   /// \brief get next sample ids in slow load mode
   std::vector<int64_t> GetNextSampleIds();
 
-  /// \brief mindrecord returns the sample id when using random access
+  /// \brief versadf returns the sample id when using random access
   Status GetMappedIndex(size_t index, size_t *mapped_index);
 
  protected:
@@ -309,7 +309,7 @@ class MINDRECORD_API ShardReader {
   Status GetMeta(const std::string &file_path, std::shared_ptr<json> meta_data_ptr,
                  std::shared_ptr<std::vector<std::string>> *addresses_ptr);
 
-  /// \brief mindrecord gets sample id when using random access
+  /// \brief versadf gets sample id when using random access
   void GetSampleIdsByRandomAccess();
 
  protected:
@@ -359,9 +359,9 @@ class MINDRECORD_API ShardReader {
   // 1 : 41  -  shard1 has 26 samples
   // 2 : 58  -  shard2 has 17 samples
   std::vector<int64_t> shard_sample_count_;
-  std::vector<int64_t> all_sampler_ids_ = {};  // mindrecord saves sample id when using random access
+  std::vector<int64_t> all_sampler_ids_ = {};  // versadf saves sample id when using random access
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_READER_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_READER_H_

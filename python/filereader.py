@@ -1,5 +1,5 @@
 """
-This module is to read data from MindRecord.
+This module is to read data from versadf.
 """
 import platform
 from mindspore import log as logger
@@ -16,16 +16,16 @@ __all__ = ['FileReader']
 
 class FileReader:
     """
-    Class to read MindRecord files.
+    Class to read versadf files.
 
     Note:
-        If `file_name` is a file path, it tries to load all MindRecord files generated \
-        in a conversion, and throws an exception if a MindRecord file is missing.
-        If `file_name` is file path list, only the MindRecord files in the list are loaded.
+        If `file_name` is a file path, it tries to load all versadf files generated \
+        in a conversion, and throws an exception if a versadf file is missing.
+        If `file_name` is file path list, only the versadf files in the list are loaded.
         The parameter `operator` has no effect and will be deprecated in a future version.
 
     Args:
-        file_name (str, list[str]): One of MindRecord file path or file path list.
+        file_name (str, list[str]): One of versadf file path or file path list.
         num_consumer (int, optional): Number of reader workers which load data. Default: ``4`` .
             It should not be smaller than 1 or larger than the number of processor cores.
         columns (list[str], optional): A list of fields where corresponding data would be read. Default: ``None`` .
@@ -35,12 +35,12 @@ class FileReader:
         ParamValueError: If `file_name` , `num_consumer` or `columns` is invalid.
 
     Examples:
-        >>> from mindspore.mindrecord import FileReader
+        >>> from mindspore.versadf import FileReader
         >>>
-        >>> mindrecord_file = "/path/to/mindrecord/file"
-        >>> reader = FileReader(file_name=mindrecord_file)
+        >>> versadf_file = "/path/to/versadf/file"
+        >>> reader = FileReader(file_name=versadf_file)
         >>>
-        >>> # create iterator for mindrecord and get saved data
+        >>> # create iterator for versadf and get saved data
         >>> for _, item in enumerate(reader.get_next()):
         ...     ori_data = item
         >>> reader.close()
@@ -94,7 +94,7 @@ class FileReader:
         Yield a batch of data according to columns at a time.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.FileReader` .
+            Please refer to the Examples of :class:`mindspore.versadf.FileReader` .
 
         Returns:
             dict, a batch whose keys are the same as columns.
@@ -113,22 +113,22 @@ class FileReader:
         Stop reader worker and close file.
 
         Note:
-            Please refer to the Examples of :class:`mindspore.mindrecord.FileReader` .
+            Please refer to the Examples of :class:`mindspore.versadf.FileReader` .
         """
         self._reader.close()
 
     def schema(self):
         """
-        Get the schema of the MindRecord.
+        Get the schema of the versadf.
 
         Returns:
             dict, the schema info.
 
         Examples:
-            >>> from mindspore.mindrecord import FileReader
+            >>> from mindspore.versadf import FileReader
             >>>
-            >>> mindrecord_file = "/path/to/mindrecord/file"
-            >>> reader = FileReader(file_name=mindrecord_file)
+            >>> versadf_file = "/path/to/versadf/file"
+            >>> reader = FileReader(file_name=versadf_file)
             >>> schema = reader.schema()
             >>> reader.close()
         """
@@ -136,16 +136,16 @@ class FileReader:
 
     def len(self):
         """
-        Get the number of the samples in MindRecord.
+        Get the number of the samples in versadf.
 
         Returns:
-            int, the number of the samples in MindRecord.
+            int, the number of the samples in versadf.
 
         Examples:
-            >>> from mindspore.mindrecord import FileReader
+            >>> from mindspore.versadf import FileReader
             >>>
-            >>> mindrecord_file = "/path/to/mindrecord/file"
-            >>> reader = FileReader(file_name=mindrecord_file)
+            >>> versadf_file = "/path/to/versadf/file"
+            >>> reader = FileReader(file_name=versadf_file)
             >>> length = reader.len()
             >>> reader.close()
         """

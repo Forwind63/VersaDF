@@ -1,11 +1,11 @@
 
 
-#include "minddata/mindrecord/include/shard_shuffle.h"
+#include "minddata/versadf/include/shard_shuffle.h"
 
 #include <algorithm>
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 ShardShuffle::ShardShuffle(uint32_t seed, ShuffleType shuffle_type)
     : shuffle_seed_(seed),
       no_of_samples_(0),
@@ -214,5 +214,5 @@ Status ShardShuffle::Execute(ShardTaskList &tasks) {
   }
   return Status::OK();
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

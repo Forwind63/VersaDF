@@ -5,12 +5,12 @@
 
 #include "utils/ms_utils.h"
 #include "minddata/dataset/util/md_log_adapter.h"
-#include "minddata/mindrecord/include/common/log_adapter.h"
-#include "minddata/mindrecord/include/common/shard_utils.h"
-#include "minddata/mindrecord/include/shard_index_generator.h"
-#include "minddata/mindrecord/include/shard_reader.h"
-#include "minddata/mindrecord/include/shard_segment.h"
-#include "minddata/mindrecord/include/shard_writer.h"
+#include "minddata/versadf/include/common/log_adapter.h"
+#include "minddata/versadf/include/common/shard_utils.h"
+#include "minddata/versadf/include/shard_index_generator.h"
+#include "minddata/versadf/include/shard_reader.h"
+#include "minddata/versadf/include/shard_segment.h"
+#include "minddata/versadf/include/shard_writer.h"
 #include "nlohmann/json.hpp"
 #include "pybind11/pybind11.h"
 #include "pybind11/stl.h"
@@ -19,7 +19,7 @@ namespace py = pybind11;
 using mindspore::dataset::MDLogAdapter;
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 #define THROW_IF_ERROR(s)                                                            \
   do {                                                                               \
     Status rc = std::move(s);                                                        \
@@ -305,8 +305,8 @@ void BindGlobalParams(py::module *m) {
   (void)(*m).def("get_max_thread_num", &GetMaxThreadNum);
 }
 
-PYBIND11_MODULE(_c_mindrecord, m) {
-  m.doc() = "pybind11 mindrecord plugin";  // optional module docstring
+PYBIND11_MODULE(_c_versadf, m) {
+  m.doc() = "pybind11 versadf plugin";  // optional module docstring
   (void)py::enum_<MSRStatus>(m, "MSRStatus", py::module_local())
     .value("SUCCESS", SUCCESS)
     .value("FAILED", FAILED)
@@ -321,7 +321,7 @@ PYBIND11_MODULE(_c_mindrecord, m) {
   BindShardIndexGenerator(&m);
   BindShardSegment(&m);
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
 namespace nlohmann {
@@ -333,7 +333,7 @@ py::object FromJsonImpl(const json &j) {
     return py::bool_(j.get<bool>());
   } else if (j.is_number()) {
     double number = j.get<double>();
-    if (fabs(number - std::floor(number)) < mindspore::mindrecord::kEpsilon) {
+    if (fabs(number - std::floor(number)) < mindspore::versadf::kEpsilon) {
       return py::int_(j.get<int64_t>());
     } else {
       return py::float_(number);

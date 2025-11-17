@@ -1,9 +1,9 @@
 """
-This module is to write data into mindrecord.
+This module is to write data into versadf.
 """
-import mindspore._c_mindrecord as ms
+import mindspore._c_versadf as ms
 from mindspore import log as logger
-from mindspore.mindrecord.common.exceptions import MRMAddSchemaError, MRMAddIndexError, MRMBuildSchemaError, \
+from mindspore.versadf.common.exceptions import MRMAddSchemaError, MRMAddIndexError, MRMBuildSchemaError, \
     MRMGetMetaError
 
 __all__ = ['ShardHeader']
@@ -13,7 +13,7 @@ class ShardHeader:
     """
     Wrapper class which is represent ShardHeader class in c++ module.
 
-    The class would store meta data of MindRecord File.
+    The class would store meta data of versadf File.
     """
     def __init__(self, header=None):
         if header:

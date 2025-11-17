@@ -1,10 +1,10 @@
 
 
-#include "minddata/mindrecord/include/shard_page.h"
+#include "minddata/versadf/include/shard_page.h"
 #include "pybind11/pybind11.h"
 
 namespace mindspore {
-namespace mindrecord {
+namespace versadf {
 json Page::GetPage() const {
   json str_page;
   str_page["page_id"] = page_id_;
@@ -36,5 +36,5 @@ void Page::DeleteLastGroupId() {
     row_group_ids_.pop_back();
   }
 }
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore

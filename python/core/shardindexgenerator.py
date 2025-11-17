@@ -1,9 +1,9 @@
 """
-This module is to  write data into mindrecord.
+This module is to  write data into versadf.
 """
-import mindspore._c_mindrecord as ms
+import mindspore._c_versadf as ms
 from mindspore import log as logger
-from mindspore.mindrecord.common.exceptions import MRMIndexGeneratorError, MRMGenerateIndexError
+from mindspore.versadf.common.exceptions import MRMIndexGeneratorError, MRMGenerateIndexError
 
 __all__ = ['ShardIndexGenerator']
 
@@ -15,8 +15,8 @@ class ShardIndexGenerator:
     The class would generate db files for accelerating reading.
 
     Args:
-        path (str): Absolute path of MindRecord File.
-        append (bool): If True, open existed MindRecord Files for appending, or create new MindRecord Files.
+        path (str): Absolute path of versadf File.
+        append (bool): If True, open existed versadf Files for appending, or create new versadf Files.
 
     Raises:
         MRMIndexGeneratorError: If failed to create index generator.

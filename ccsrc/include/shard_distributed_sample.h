@@ -1,19 +1,19 @@
 
 
-#ifndef MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_DISTRIBUTED_SAMPLE_H_
-#define MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_DISTRIBUTED_SAMPLE_H_
+#ifndef MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_DISTRIBUTED_SAMPLE_H_
+#define MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_DISTRIBUTED_SAMPLE_H_
 
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 #include "minddata/dataset/include/dataset/constants.h"
-#include "minddata/mindrecord/include/shard_shuffle.h"
-#include "minddata/mindrecord/include/shard_sample.h"
+#include "minddata/versadf/include/shard_shuffle.h"
+#include "minddata/versadf/include/shard_sample.h"
 
 namespace mindspore {
-namespace mindrecord {
-class MINDRECORD_API ShardDistributedSample : public ShardSample {
+namespace versadf {
+class versadf_API ShardDistributedSample : public ShardSample {
  public:
   ShardDistributedSample(int num_shards, int shard_id, int64_t no_of_padded_samples, dataset::ShuffleMode shuffle_mode,
                          uint32_t seed, int64_t no_of_samples = 0, int64_t offset = -1);
@@ -43,7 +43,7 @@ class MINDRECORD_API ShardDistributedSample : public ShardSample {
   bool first_epoch_;    // check (num_sample + num_padded) % num_shards == 0 in first epoch
   ShardTaskList task_;  // maintain the input tasks in first epoch
 };
-}  // namespace mindrecord
+}  // namespace versadf
 }  // namespace mindspore
 
-#endif  // MINDSPORE_CCSRC_MINDDATA_MINDRECORD_INCLUDE_SHARD_DISTRIBUTED_SAMPLE_H_
+#endif  // MINDSPORE_CCSRC_MINDDATA_versadf_INCLUDE_SHARD_DISTRIBUTED_SAMPLE_H_
